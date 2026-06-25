@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord Immobilier - Live Dashboard</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+        :root {
+            --primary-dark: #0a1e4d;
+            --primary-light: #1a3a7a;
+            --accent-gold: #d4af37;
+            --accent-gold-light: #e8c547;
+            --color-warm: #ff9500;
+            --color-white: #ffffff;
+            --color-gray-light: #f9f9f9;
+            --color-gray-medium: #e5e7eb;
+            --color-gray-dark: #6b7280;
+            --color-text-dark: #1f2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 50%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            color: var(--color-text-dark);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(to right, var(--primary-dark), #0d2550);
+            color: var(--color-white);
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .header-top {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .header-icon {
+            color: var(--accent-gold);
+            font-size: 1.75rem;
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-size: clamp(0.75rem, 2vw, 1rem);
+            color: #bfdbfe;
+            margin-top: 0.25rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 0.5rem;
+            border: 1px solid var(--accent-gold);
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .logo-text {
+            font-size: 0.875rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .refresh-btn {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: clamp(0.75rem, 2vw, 1rem);
+        }
+
+        .refresh-btn:hover {
+            background: var(--accent-gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header-info {
+            font-size: 0.875rem;
+            color: #dbeafe;
+            margin-top: 0.5rem;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .filter-section {
+            background: var(--color-white);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-toggle {
+            background: none;
+            border: none;
+            color: var(--primary-dark);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .filter-toggle:hover {
+            color: var(--accent-gold);
+        }
+
+        .filter-content {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--color-gray-medium);
+        }
+
+        .filter-content.active {
+            display: grid;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-group select,
+        .filter-group button {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--accent-gold);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-group select {
+            background: var(--color-white);
+            color: var(--primary-dark);
+            cursor: pointer;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+        }
+
+        .filter-group button {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .filter-group button:hover {
+            background: var(--accent-gold-light);
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--color-white);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--accent-gold);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--color-gray-dark);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-size: clamp(1.75rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value.gold {
+            color: var(--accent-gold);
+        }
+
+        .stat-value.warm {
+            color: var(--color-warm);
+        }
+
+        .stat-subtext {
+            font-size: 0.75rem;
+            color: var(--color-gray-dark);
+        }
+
+        .chart-container {
+            background: var(--color-white);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .progress-label {
+            font-weight: 500;
+            color: var(--color-text-dark);
+        }
+
+        .progress-value {
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--color-gray-medium);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-gold));
+            transition: width 0.3s ease;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 0.75rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--color-white);
+        }
+
+        thead {
+            background: linear-gradient(to right, var(--primary-dark), #0d2550);
+            color: var(--color-white);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid var(--accent-gold);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--color-gray-medium);
+            font-size: 0.875rem;
+        }
+
+        tbody tr:hover {
+            background: var(--color-gray-light);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .badge.vip {
+            background: var(--primary-dark);
+            color: var(--color-white);
+        }
+
+        .badge.warm {
+            background: var(--color-warm);
+            color: var(--color-white);
+        }
+
+        .badge.status {
+            background: #dbeafe;
+            color: var(--primary-dark);
+        }
+
+        .client-card {
+            display: none;
+            background: var(--color-white);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent-gold);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .client-card.active {
+            display: block;
+        }
+
+        .client-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .client-name {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .client-date {
+            font-size: 0.75rem;
+            color: var(--color-gray-dark);
+        }
+
+        .client-info {
+            font-size: 0.75rem;
+            color: var(--color-gray-dark);
+            line-height: 1.6;
+        }
+
+        .client-info span {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.75rem;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .header-top {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-label {
+                font-size: 0.7rem;
+            }
+
+            .stat-value {
+                font-size: 1.75rem;
+            }
+
+            .table-responsive {
+                display: none;
+            }
+
+            .client-card.active {
+                display: block;
+            }
+
+            .chart-container {
+                padding: 1rem;
+            }
+
+            .chart-title {
+                font-size: 1rem;
+            }
+
+            .progress-item {
+                margin-bottom: 1rem;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--color-gray-dark);
+        }
+
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-message {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #166534;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="header-top">
+                <div class="header-brand">
+                    <div class="header-icon">🏠</div>
+                    <div>
+                        <h1 class="header-title">Tableau de Bord Immobilier</h1>
+                        <p class="header-subtitle">Analyse en Temps Réel | Gestion Complète du Portefeuille</p>
+                    </div>
+                </div>
+                
+                <div class="logo-container" id="logoContainer">
+                    <div class="logo">YC</div>
+                    <div class="logo-text">Your Company</div>
+                </div>
+
+                <button class="refresh-btn" id="refreshBtn" onclick="fetchAndProcessData()">
+                    <span id="refreshIcon">🔄</span>
+                    <span id="refreshText">Actualiser</span>
+                </button>
+            </div>
+            <div class="header-info" id="lastUpdate">Mise à jour: --:--:-- | Source: Google Sheets (Database)</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="filter-section">
+            <button class="filter-toggle" onclick="toggleFilters()">
+                🔍 Afficher les Filtres
+            </button>
+            
+            <div class="filter-content" id="filterContent">
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label for="typeFilter">Type de Propriété</label>
+                        <select id="typeFilter" onchange="applyFilters()">
+                            <option value="all">Tous les types</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="classFilter">Classification</label>
+                        <select id="classFilter" onchange="applyFilters()">
+                            <option value="all">Toutes les classifications</option>
+                            <option value="VIP">VIP</option>
+                            <option value="WARM">WARM</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <button onclick="exportToCSV()">📥 Exporter en CSV</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total des Leads</div>
+                    <div class="stat-value" id="totalLeads">0</div>
+                    <div class="stat-subtext" id="leadsInfo">Affichage: 0 | Total: 0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Clients VIP</div>
+                    <div class="stat-value gold" id="vipCount">0</div>
+                    <div class="stat-subtext" id="vipPercent">0% du total</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Clients WARM</div>
+                    <div class="stat-value warm" id="warmCount">0</div>
+                    <div class="stat-subtext" id="warmPercent">0% du total</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Score Moyen</div>
+                    <div class="stat-value" id="avgScore">0</div>
+                    <div class="stat-subtext">Évaluation globale</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div class="chart-container">
+                    <h3 class="chart-title">📊 Distribution des Types</h3>
+                    <div id="typeChart"></div>
+                </div>
+
+                <div class="chart-container">
+                    <h3 class="chart-title">💳 Méthodes de Paiement</h3>
+                    <div id="paymentChart"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="chart-container">
+                <h3 class="chart-title">🏗️ État des Projets</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;" id="statusChart"></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="chart-container">
+                <h3 class="chart-title">👥 Clients Récents</h3>
+                
+                <div class="table-responsive" id="tableWrapper">
+                    <table id="clientsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Nom</th>
+                                <th>Type</th>
+                                <th>État</th>
+                                <th>Paiement</th>
+                                <th>Score</th>
+                                <th>Classe</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="mobileCards"></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div class="stat-card">
+                    <div class="stat-label">Taux VIP</div>
+                    <div class="stat-value gold" id="vipRate">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Taux WARM</div>
+                    <div class="stat-value warm" id="warmRate">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Données Filtrées</div>
+                    <div class="stat-value" id="filteredCount">0/0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Actualisation Auto</div>
+                    <div class="stat-value" style="font-size: 1.5rem;">30s</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const SHEET_ID = '1cVFH6VPgXHrZ51LDdl1MzzUwXXC7XnORUQaY0T0pBUM';
+        const SHEET_GID = '0';
+        const AUTO_REFRESH_INTERVAL = 30000;
+
+        let allData = [];
+        let filteredData = [];
+        let autoRefreshTimer;
+
+        google.charts.load('current', {'packages':['corechart']});
+
+        function fetchAndProcessData() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            const refreshIcon = document.getElementById('refreshIcon');
+            const refreshText = document.getElementById('refreshText');
+
+            refreshBtn.disabled = true;
+            refreshIcon.textContent = '⏳';
+            refreshText.textContent = 'Chargement...';
+
+            try {
+                const query = new google.visualization.Query(
+                    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${SHEET_GID}`
+                );
+                
+                query.setQuery('SELECT *');
+                query.send(handleQueryResponse);
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                showError('Erreur lors du chargement des données. Vérifiez que le sheet est partagé publiquement.');
+                
+                refreshBtn.disabled = false;
+                refreshIcon.textContent = '🔄';
+                refreshText.textContent = 'Actualiser';
+            }
+        }
+
+        function handleQueryResponse(response) {
+            const refreshBtn = document.getElementById('refreshBtn');
+            const refreshIcon = document.getElementById('refreshIcon');
+            const refreshText = document.getElementById('refreshText');
+
+            if (response.isError()) {
+                showError('Erreur: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+                refreshBtn.disabled = false;
+                refreshIcon.textContent = '🔄';
+                refreshText.textContent = 'Actualiser';
+                return;
+            }
+
+            const dataTable = response.getDataTable();
+            const cols = dataTable.getNumberOfColumns();
+            const rows = dataTable.getNumberOfRows();
+
+            allData = [];
+            for (let i = 0; i < rows; i++) {
+                const rowData = {};
+                for (let j = 0; j < cols; j++) {
+                    const colLabel = dataTable.getColumnLabel(j);
+                    rowData[colLabel] = dataTable.getValue(i, j);
+                }
+                allData.push(rowData);
+            }
+
+            allData = allData.filter(row => {
+                return row['Nom Complet'] || row['nom'] || Object.values(row).some(v => v);
+            }).map(row => ({
+                date: row['Date d\'inscription'] || row['date'] || '',
+                name: row['Nom Complet'] || row['nom'] || '',
+                phone: row['Numéro de Téléphone'] || row['phone'] || '',
+                type: row['Type  d\'Immobilier'] || row['type'] || '',
+                bedrooms: row['Type d\'Appartement'] || row['bedrooms'] || '',
+                status: row['État du Projet'] || row['status'] || '',
+                surface: row['la surface'] || row['surface'] || '',
+                budget: row['Budget'] || row['budget'] || '',
+                payment: row['Paiement'] || row['payment'] || '',
+                objective: row['l\'objectif'] || row['objective'] || '',
+                score: parseInt(row['score'] || 0),
+                classification: row['classification'] || ''
+            }));
+
+            filteredData = [...allData];
+            populateFilters();
+            updateUI();
+            updateLastUpdateTime();
+
+            refreshBtn.disabled = false;
+            refreshIcon.textContent = '🔄';
+            refreshText.textContent = 'Actualiser';
+        }
+
+        function updateUI() {
+            const validData = filteredData.filter(d => d.score && d.classification);
+            
+            if (validData.length === 0) {
+                showError('Aucune donnée valide à afficher');
+                return;
+            }
+
+            const stats = calculateStats(validData);
+            
+            document.getElementById('totalLeads').textContent = stats.totalLeads;
+            document.getElementById('leadsInfo').textContent = `Affichage: ${filteredData.length} | Total: ${allData.length}`;
+            document.getElementById('vipCount').textContent = stats.vipCount;
+            document.getElementById('vipPercent').textContent = `${stats.vipPercent}% du total`;
+            document.getElementById('warmCount').textContent = stats.warmCount;
+            document.getElementById('warmPercent').textContent = `${stats.warmPercent}% du total`;
+            document.getElementById('avgScore').textContent = stats.avgScore;
+            document.getElementById('vipRate').textContent = `${stats.vipPercent}%`;
+            document.getElementById('warmRate').textContent = `${stats.warmPercent}%`;
+            document.getElementById('filteredCount').textContent = `${filteredData.length}/${allData.length}`;
+
+            updateDistributionCharts(stats);
+            updateStatusChart(stats);
+            updateClientsTable(validData);
+        }
+
+        function calculateStats(data) {
+            const totalLeads = data.length;
+            const vipCount = data.filter(d => d.classification === 'VIP').length;
+            const warmCount = data.filter(d => d.classification === 'WARM').length;
+            const avgScore = totalLeads > 0 ? Math.round(data.reduce((sum, d) => sum + d.score, 0) / totalLeads) : 0;
+
+            const typeCount = {};
+            const paymentCount = {};
+            const statusCount = {};
+
+            data.forEach(d => {
+                typeCount[d.type] = (typeCount[d.type] || 0) + 1;
+                paymentCount[d.payment] = (paymentCount[d.payment] || 0) + 1;
+                statusCount[d.status] = (statusCount[d.status] || 0) + 1;
+            });
+
+            return {
+                totalLeads,
+                vipCount,
+                warmCount,
+                avgScore,
+                vipPercent: totalLeads > 0 ? Math.round((vipCount / totalLeads) * 100) : 0,
+                warmPercent: totalLeads > 0 ? Math.round((warmCount / totalLeads) * 100) : 0,
+                typeCount,
+                paymentCount,
+                statusCount
+            };
+        }
+
+        function updateDistributionCharts(stats) {
+            let typeHTML = '';
+            Object.entries(stats.typeCount).forEach(([type, count]) => {
+                const percent = stats.totalLeads > 0 ? (count / stats.totalLeads) * 100 : 0;
+                typeHTML += `
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-label">${type}</span>
+                            <span class="progress-value">${count}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('typeChart').innerHTML = typeHTML;
+
+            let paymentHTML = '';
+            Object.entries(stats.paymentCount).forEach(([payment, count]) => {
+                const percent = stats.totalLeads > 0 ? (count / stats.totalLeads) * 100 : 0;
+                paymentHTML += `
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-label">${payment}</span>
+                            <span class="progress-value">${count}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('paymentChart').innerHTML = paymentHTML;
+        }
+
+        function updateStatusChart(stats) {
+            let statusHTML = '';
+            Object.entries(stats.statusCount).forEach(([status, count]) => {
+                const percent = stats.totalLeads > 0 ? Math.round((count / stats.totalLeads) * 100) : 0;
+                statusHTML += `
+                    <div class="stat-card" style="border-left: 4px solid var(--accent-gold);">
+                        <div class="stat-label">${status}</div>
+                        <div class="stat-value">${count}</div>
+                        <div class="stat-subtext">${percent}% des clients</div>
+                    </div>
+                `;
+            });
+            document.getElementById('statusChart').innerHTML = statusHTML;
+        }
+
+        function updateClientsTable(data) {
+            const recentData = data.slice(-10).reverse();
+            
+            let tableHTML = '';
+            recentData.forEach(client => {
+                const classificationBadge = client.classification === 'VIP' ? 
+                    `<span class="badge vip">${client.classification}</span>` :
+                    `<span class="badge warm">${client.classification}</span>`;
+                
+                tableHTML += `
+                    <tr class="fade-in">
+                        <td>${client.date}</td>
+                        <td><strong>${client.name}</strong></td>
+                        <td>${client.type}</td>
+                        <td><span class="badge status">${client.status}</span></td>
+                        <td>${client.payment}</td>
+                        <td><strong style="color: var(--accent-gold);">${client.score}</strong></td>
+                        <td>${classificationBadge}</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('tableBody').innerHTML = tableHTML;
+
+            let cardsHTML = '';
+            recentData.forEach(client => {
+                const classificationBadge = client.classification === 'VIP' ? 
+                    `<span class="badge vip">${client.classification}</span>` :
+                    `<span class="badge warm">${client.classification}</span>`;
+                
+                cardsHTML += `
+                    <div class="client-card active fade-in">
+                        <div class="client-card-header">
+                            <div>
+                                <div class="client-name">${client.name}</div>
+                                <div class="client-date">${client.date}</div>
+                            </div>
+                            ${classificationBadge}
+                        </div>
+                        <div class="client-info">
+                            <p><span>Type:</span> ${client.type}</p>
+                            <p><span>État:</span> ${client.status}</p>
+                            <p><span>Paiement:</span> ${client.payment}</p>
+                            <p><span>Score:</span> <span style="color: var(--accent-gold);">${client.score}</span></p>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('mobileCards').innerHTML = cardsHTML;
+        }
+
+        function populateFilters() {
+            const types = [...new Set(allData.map(d => d.type).filter(t => t))];
+            let typeOptions = '<option value="all">Tous les types</option>';
+            types.forEach(type => {
+                typeOptions += `<option value="${type}">${type}</option>`;
+            });
+            document.getElementById('typeFilter').innerHTML = typeOptions;
+        }
+
+        function applyFilters() {
+            const typeFilter = document.getElementById('typeFilter').value;
+            const classFilter = document.getElementById('classFilter').value;
+
+            filteredData = allData.filter(item => {
+                const typeMatch = typeFilter === 'all' || item.type === typeFilter;
+                const classMatch = classFilter === 'all' || item.classification === classFilter;
+                return typeMatch && classMatch && item.score && item.classification;
+            });
+
+            updateUI();
+        }
+
+        function toggleFilters() {
+            const filterContent = document.getElementById('filterContent');
+            const filterToggle = document.querySelector('.filter-toggle');
+            
+            filterContent.classList.toggle('active');
+            filterToggle.textContent = filterContent.classList.contains('active') ? 
+                '🔍 Masquer les Filtres' : 
+                '🔍 Afficher les Filtres';
+        }
+
+        function exportToCSV() {
+            const headers = ['Date', 'Nom', 'Type', 'État', 'Paiement', 'Objectif', 'Score', 'Classification'];
+            const rows = filteredData.map(d => [
+                d.date, d.name, d.type, d.status, d.payment, d.objective, d.score, d.classification
+            ]);
+
+            let csv = [headers, ...rows].map(row => 
+                row.map(cell => `"${cell}"`).join(',')
+            ).join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Dashboard_${new Date().toLocaleDateString('fr-FR')}.csv`;
+            link.click();
+        }
+
+        function showError(message) {
+            const container = document.querySelector('.container');
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = '❌ ' + message;
+            container.insertBefore(errorDiv, container.firstChild);
+            setTimeout(() => errorDiv.remove(), 5000);
+        }
+
+        function updateLastUpdateTime() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('fr-FR');
+            document.getElementById('lastUpdate').textContent = `Mise à jour: ${time} | Source: Google Sheets (Database)`;
+        }
+
+        function initializeDashboard() {
+            fetchAndProcessData();
+            autoRefreshTimer = setInterval(() => {
+                fetchAndProcessData();
+            }, AUTO_REFRESH_INTERVAL);
+        }
+
+        window.addEventListener('DOMContentLoaded', initializeDashboard);
+    </script>
+</body>
+</html>
