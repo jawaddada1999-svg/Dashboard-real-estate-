@@ -3,101 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AXON FLOW - Premium Real Estate Dashboard</title>
+    <title>AXON FLOW - Dashboard VIP</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- ApexCharts CDN (Modern & Sleek UI Charts) -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Cairo', 'Inter', sans-serif; }
+        body { font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif; }
+        /* Custom scrollbar for modern look */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100 min-h-screen antialiased flex">
+<body class="bg-[#030712] text-slate-100 min-h-screen antialiased flex selection:bg-amber-500/30 selection:text-white">
 
-    <aside class="hidden lg:block fixed right-0 top-0 h-full w-64 bg-slate-950 border-l border-slate-900 p-6 z-40 shadow-2xl">
-        <div class="mb-10">
-            <h2 class="text-amber-500 font-bold text-2xl tracking-wider">AXON FLOW</h2>
-            <p class="text-[10px] text-slate-400 uppercase tracking-widest mt-1">Real Estate Systems</p>
+    <!-- Background Glow Blobs -->
+    <div class="fixed -top-40 -right-40 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="fixed top-1/2 left-1/4 w-80 h-80 bg-amber-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <!-- Sidebar Desktop -->
+    <aside class="hidden lg:block fixed right-0 top-0 h-full w-64 bg-[#030712]/80 border-l border-white/5 p-6 z-40 backdrop-blur-xl">
+        <div class="mb-10 flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-amber-500 animate-pulse"></div>
+            <div>
+                <h2 class="text-white font-bold text-xl tracking-wider font-sans">AXON FLOW</h2>
+                <p class="text-[9px] text-amber-500/70 uppercase tracking-widest font-semibold">AI Automation Agency</p>
+            </div>
         </div>
-        <nav class="space-y-2">
-            <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-gradient-to-r from-amber-500/10 to-amber-500/5 text-amber-500 border border-amber-500/20 transition-all">
-                <span>📊</span> لوحة التحكم الرئيسيّة
+        <nav class="space-y-1.5">
+            <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold bg-white/[0.03] text-amber-500 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.05)] transition-all">
+                <span class="text-sm">📊</span> لوحة التحكم الرئيسيّة
             </button>
         </nav>
     </aside>
 
-    <div class="lg:mr-64 w-full min-h-screen flex flex-col">
+    <!-- Main Content Wrapper -->
+    <div class="lg:mr-64 w-full min-h-screen flex flex-col relative z-10">
         
-        <header class="flex items-center justify-between px-4 lg:px-8 py-5 border-b border-slate-900 bg-slate-950/60 backdrop-blur-md sticky top-0 z-30">
+        <!-- Header -->
+        <header class="flex items-center justify-between px-6 lg:px-8 py-5 border-b border-white/5 bg-[#030712]/40 backdrop-blur-md sticky top-0 z-30">
             <div>
-                <h1 class="text-xl lg:text-2xl font-bold text-white tracking-tight">لوحة التحكم الاستراتيجية</h1>
-                <p class="text-xs text-slate-400 mt-0.5">متابعة فورية ومؤشرات الأداء لوكالة AXON FLOW</p>
+                <h1 class="text-lg lg:text-xl font-bold text-white bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">لوحة المتابعة الفورية</h1>
+                <p class="text-[11px] text-slate-400 mt-0.5">أنظمة الأتمتة العقارية الذكية لـ AXON FLOW</p>
+            </div>
+            <div class="flex items-center gap-2 bg-white/[0.02] border border-white/5 px-3 py-1.5 rounded-xl">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                <span class="text-[10px] font-mono text-slate-400">Live Data Sync</span>
             </div>
         </header>
 
+        <!-- Loader -->
         <div id="loader" class="flex-1 flex flex-col items-center justify-center py-20">
-            <div class="w-12 h-12 rounded-full border-4 border-slate-800 border-t-amber-500 animate-spin mb-4"></div>
-            <p class="text-slate-400 text-sm animate-pulse">جاري استيراد وتحليل البيانات الحية من Google Sheets...</p>
+            <div class="w-10 h-10 rounded-full border-2 border-white/5 border-t-amber-500 animate-spin mb-4"></div>
+            <p class="text-slate-400 text-xs font-medium tracking-wide">جاري استيراد وهيكلة البيانات الحية من السيرفر...</p>
         </div>
 
+        <!-- Dashboard Content Container (Hidden till loaded) -->
         <div id="dashboard-content" class="p-4 lg:p-8 space-y-6 flex-1 max-w-7xl w-full mx-auto hidden">
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
-                <div class="bg-slate-900/60 border border-blue-500/10 rounded-2xl p-6 flex justify-between items-center shadow-2xl shadow-blue-500/5 backdrop-blur-sm">
+            <!-- 3 Modern Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
+                <!-- Card 1 -->
+                <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-5 flex justify-between items-center backdrop-blur-md hover:border-blue-500/20 transition-all duration-300 group">
                     <div>
-                        <p class="text-slate-400 text-xs font-medium mb-1.5">إجمالي العملاء المحتملين</p>
-                        <p id="stat-total-leads" class="font-bold text-3xl lg:text-4xl text-white tracking-tight">0</p>
+                        <p class="text-slate-400 text-[11px] font-medium mb-1">إجمالي العملاء المحتملين</p>
+                        <p id="stat-total-leads" class="font-sans font-bold text-3xl text-white tracking-tight group-hover:text-blue-400 transition-colors">0</p>
                     </div>
-                    <div class="p-3.5 rounded-xl text-2xl bg-blue-500/10 text-blue-400 shadow-inner">👥</div>
+                    <div class="p-3 rounded-xl bg-blue-500/5 text-blue-400 border border-blue-500/10 text-xl shadow-[0_0_15px_rgba(59,130,246,0.05)]">👥</div>
                 </div>
-
-                <div class="bg-slate-900/60 border border-amber-500/10 rounded-2xl p-6 flex justify-between items-center shadow-2xl shadow-amber-500/5 backdrop-blur-sm">
+                <!-- Card 2 -->
+                <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-5 flex justify-between items-center backdrop-blur-md hover:border-amber-500/20 transition-all duration-300 group">
                     <div>
-                        <p class="text-slate-400 text-xs font-medium mb-1.5">المفاوضات الجارية</p>
-                        <p id="stat-active-deals" class="font-bold text-3xl lg:text-4xl text-white tracking-tight">0</p>
+                        <p class="text-slate-400 text-[11px] font-medium mb-1">المفاوضات الجارية</p>
+                        <p id="stat-active-deals" class="font-sans font-bold text-3xl text-white tracking-tight group-hover:text-amber-400 transition-colors">0</p>
                     </div>
-                    <div class="p-3.5 rounded-xl text-2xl bg-amber-500/10 text-amber-400 shadow-inner">⏳</div>
+                    <div class="p-3 rounded-xl bg-amber-500/5 text-amber-400 border border-amber-500/10 text-xl shadow-[0_0_15px_rgba(245,158,11,0.05)]">⏳</div>
                 </div>
-
-                <div class="bg-slate-900/60 border border-emerald-500/10 rounded-2xl p-6 flex justify-between items-center shadow-2xl shadow-emerald-500/5 backdrop-blur-sm">
+                <!-- Card 3 -->
+                <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-5 flex justify-between items-center backdrop-blur-md hover:border-emerald-500/20 transition-all duration-300 group">
                     <div>
-                        <p class="text-slate-400 text-xs font-medium mb-1.5">متوسط الميزانية</p>
-                        <p id="stat-avg-budget" class="font-bold text-3xl lg:text-4xl text-white tracking-tight">0M</p>
+                        <p class="text-slate-400 text-[11px] font-medium mb-1">متوسط الميزانية المتوقعة</p>
+                        <p id="stat-avg-budget" class="font-sans font-bold text-3xl text-white tracking-tight group-hover:text-emerald-400 transition-colors">0M</p>
                     </div>
-                    <div class="p-3.5 rounded-xl text-2xl bg-emerald-500/10 text-emerald-400 shadow-inner">💰</div>
+                    <div class="p-3 rounded-xl bg-emerald-500/5 text-emerald-400 border border-emerald-500/10 text-xl shadow-[0_0_15px_rgba(16,185,129,0.05)]">💰</div>
                 </div>
             </div>
 
+            <!-- Modern Charts Section -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-slate-900/50 border border-slate-900 rounded-2xl p-5 lg:p-6 backdrop-blur-sm">
-                    <h3 class="text-white font-bold text-sm lg:text-base mb-4">📊 توزيع الحالات والمتابعات</h3>
-                    <div class="w-full h-56 flex items-center justify-center">
-                        <canvas id="chart-status"></canvas>
+                <!-- Status Chart Card -->
+                <div class="bg-white/[0.01] border border-white/5 rounded-2xl p-5 backdrop-blur-md">
+                    <div class="mb-4">
+                        <h3 class="text-white font-bold text-xs lg:text-sm">📊 توزيع المراحل البيعية (Pipeline)</h3>
+                        <p class="text-[10px] text-slate-500 mt-0.5">حالة تتبع الصفقات الحالية داخل السيستم</p>
                     </div>
+                    <div id="chart-status" class="w-full min-h-[240px]"></div>
                 </div>
-                <div class="bg-slate-900/50 border border-slate-900 rounded-2xl p-5 lg:p-6 backdrop-blur-sm">
-                    <h3 class="text-white font-bold text-sm lg:text-base mb-4">🎯 تفصيل جودة العملاء (درجة الحرارة)</h3>
-                    <div class="w-full h-56 flex items-center justify-center">
-                        <canvas id="chart-classification"></canvas>
+                <!-- Classification Chart Card -->
+                <div class="bg-white/[0.01] border border-white/5 rounded-2xl p-5 backdrop-blur-md">
+                    <div class="mb-4">
+                        <h3 class="text-white font-bold text-xs lg:text-sm">🎯 جودة وتصنيف العملاء (Temperature)</h3>
+                        <p class="text-[10px] text-slate-500 mt-0.5">مدى جاهزية وتفاعل العميل المستهدف</p>
                     </div>
+                    <div id="chart-classification" class="w-full min-h-[240px]"></div>
                 </div>
             </div>
 
-            <div class="bg-slate-900/50 border border-slate-900 rounded-2xl p-5 lg:p-6 overflow-hidden backdrop-blur-sm">
-                <h3 class="text-white font-bold text-sm lg:text-base mb-4 flex items-center gap-2">📂 سجل تفاصيل العملاء الأخيرين</h3>
+            <!-- Premium Data Table -->
+            <div class="bg-white/[0.01] border border-white/5 rounded-2xl p-5 backdrop-blur-md overflow-hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-white font-bold text-xs lg:text-sm">📂 تغذية البيانات الفورية للعملاء</h3>
+                        <p class="text-[10px] text-slate-500 mt-0.5">آخر المخرجات التي تمت فلترتها وتدقيقها آلياً</p>
+                    </div>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-right border-collapse">
                         <thead>
-                            <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider">
-                                <th class="pb-3 font-semibold px-2">الاسم</th>
-                                <th class="pb-3 font-semibold px-2">الهاتف</th>
-                                <th class="pb-3 font-semibold px-2">الميزانية</th>
-                                <th class="pb-3 font-semibold px-2">نوع العقار</th>
-                                <th class="pb-3 font-semibold px-2">الحالة</th>
-                                <th class="pb-3 font-semibold px-2">التصنيف</th>
+                            <tr class="border-b border-white/5 text-slate-400 text-[11px] font-semibold tracking-wider">
+                                <th class="pb-3 px-3">الاسم</th>
+                                <th class="pb-3 px-3">الهاتف</th>
+                                <th class="pb-3 px-3">الميزانية</th>
+                                <th class="pb-3 px-3">النوع المطلوب</th>
+                                <th class="pb-3 px-3">الحالة التنفيذية</th>
+                                <th class="pb-3 px-3">التصنيف</th>
                             </tr>
                         </thead>
-                        <tbody id="leads-table-body" class="text-xs divide-y divide-slate-900/60">
-                            </tbody>
+                        <tbody id="leads-table-body" class="text-xs divide-y divide-white/[0.02]">
+                            <!-- Injected rows via JS -->
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -105,10 +143,10 @@
         </div>
     </div>
 
+    <!-- Logic & Charting Engine Script -->
     <script>
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz9JgepSHyiEXcin3VkIgx5jGnQfdTTJKxCTuAsJMslONSZcSJj1GLEkaynd4lIksZpc2ht933QUcM/pub?output=csv';
 
-        // Translation Maps for UI Tags
         const tagsMap = {
             villa: 'فيلا 🏰', apartment: 'شقة 🏢', commercialshop: 'محل تجاري 🏪',
             vip: 'VIP 🔥', warm: 'WARM 🪵', cold: 'COLD ❄️',
@@ -118,15 +156,13 @@
         async function initDashboard() {
             try {
                 const response = await fetch(csvUrl);
-                if (!response.ok) throw new Error("Failed to stream spreadsheet");
+                if (!response.ok) throw new Error("Failed to load Google Sheets stream");
                 const csvText = await response.text();
                 
-                // Parse CSV rows cleanly
                 const lines = csvText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
                 const headers = lines[0].split(',').map(h => h.toLowerCase().trim());
                 
                 const data = lines.slice(1).map(line => {
-                    // Match values correctly handling possible quotes
                     const values = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
                     let obj = {};
                     headers.forEach((header, idx) => {
@@ -136,7 +172,7 @@
                     return obj;
                 });
 
-                // Normalize Data Feed
+                // Normalize Data Rows
                 const normalizedData = data.map(item => {
                     const classification = (item['classification'] || item['م'] || '').toLowerCase();
                     const status = (item['status'] || item['p'] || '').toLowerCase();
@@ -165,74 +201,80 @@
                     };
                 });
 
-                // Calculate Top Line KPI Metrics
+                // Compute KPI Top Counters
                 const totalLeads = normalizedData.length;
                 const activeDeals = normalizedData.filter(d => d.status === 'encours').length;
                 const sumBudget = normalizedData.reduce((sum, d) => sum + (parseInt(d.budget) || 30), 0);
                 const avgBudget = totalLeads > 0 ? (sumBudget / totalLeads).toFixed(0) : 0;
 
-                // Set HTML Metrics values
                 document.getElementById('stat-total-leads').innerText = totalLeads;
                 document.getElementById('stat-active-deals').innerText = activeDeals;
                 document.getElementById('stat-avg-budget').innerText = avgBudget + 'M';
 
-                // Render Tables Feed
+                // Build Table Rows Dynamic Injections
                 const tableBody = document.getElementById('leads-table-body');
-                normalizedData.slice(0, 15).forEach(row => {
+                normalizedData.slice(0, 12).forEach(row => {
                     const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-900/40 transition-colors border-b border-slate-900/40";
+                    tr.className = "hover:bg-white/[0.02] border-b border-white/[0.02] transition-colors";
                     tr.innerHTML = `
-                        <td class="py-3 px-2 text-white font-medium">${row.name}</td>
-                        <td class="py-3 px-2 text-slate-400 font-mono">${row.phone}</td>
-                        <td class="py-3 px-2 text-amber-400 font-bold">${row.budget}</td>
-                        <td class="py-3 px-2 text-slate-300">${tagsMap[row.propertyType]}</td>
-                        <td class="py-3 px-2"><span class="px-2.5 py-1 rounded-lg text-[11px] font-semibold ${row.status==='vendu'?'bg-emerald-500/10 text-emerald-400':row.status==='encours'?'bg-amber-500/10 text-amber-400':'bg-blue-500/10 text-blue-400'}">${tagsMap[row.status]}</span></td>
-                        <td class="py-3 px-2"><span class="px-2.5 py-1 rounded-lg text-[11px] font-semibold ${row.classification==='vip'?'bg-emerald-500/10 text-emerald-400':'bg-slate-800 text-slate-400'}">${tagsMap[row.classification]}</span></td>
+                        <td class="py-3.5 px-3 text-white font-medium">${row.name}</td>
+                        <td class="py-3.5 px-3 text-slate-400 font-mono tracking-wide">${row.phone}</td>
+                        <td class="py-3.5 px-3 text-amber-400 font-bold font-sans">${row.budget}</td>
+                        <td class="py-3.5 px-3 text-slate-300">${tagsMap[row.propertyType]}</td>
+                        <td class="py-3.5 px-3">
+                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                                row.status==='vendu'?'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20':
+                                row.status==='encours'?'bg-amber-500/10 text-amber-400 border border-amber-500/20':
+                                'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                            }">${tagsMap[row.status]}</span>
+                        </td>
+                        <td class="py-3.5 px-3">
+                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                                row.classification==='vip'?'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20':'bg-white/5 text-slate-400 border border-white/10'
+                            }">${tagsMap[row.classification]}</span>
+                        </td>
                     `;
                     tableBody.appendChild(tr);
                 });
 
-                // Chart 1: Pipeline Status Data
+                // Compute Chart Datasets 
                 const statusCounts = { nouveau: 0, encours: 0, vendu: 0, perdu: 0 };
                 normalizedData.forEach(d => statusCounts[d.status]++);
-                
-                new Chart(document.getElementById('chart-status'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['جديد', 'قيد التنفيذ', 'تم البيع', 'غير مهتم'],
-                        datasets: [{
-                            data: [statusCounts.nouveau, statusCounts.encours, statusCounts.vendu, statusCounts.perdu],
-                            backgroundColor: ['#3B82F6', '#F59E0B', '#10B981', '#EF4444'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } } }
-                });
 
-                // Chart 2: Lead Temperature Data
                 const classCounts = { vip: 0, warm: 0, cold: 0 };
                 normalizedData.forEach(d => classCounts[d.classification]++);
 
-                new Chart(document.getElementById('chart-classification'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['VIP 🔥', 'WARM 🪵', 'COLD ❄️'],
-                        datasets: [{
-                            data: [classCounts.vip, classCounts.warm, classCounts.cold],
-                            backgroundColor: ['#10B981', '#F59E0B', '#64748B'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } } }
-                });
+                // Render Sleek Apex Chart 1
+                new ApexCharts(document.getElementById('chart-status'), {
+                    series: [statusCounts.nouveau, statusCounts.encours, statusCounts.vendu, statusCounts.perdu],
+                    chart: { type: 'donut', height: 240, fontFamily: 'Cairo' },
+                    labels: ['جديد', 'قيد التنفيذ', 'تم البيع', 'غير مهتم'],
+                    colors: ['#3b82f6', '#f59e0b', '#10b981', '#ef4444'],
+                    stroke: { show: false },
+                    dataLabels: { enabled: false },
+                    legend: { position: 'bottom', labels: { colors: '#94a3b8' }, fontSize: '11px' },
+                    plotOptions: { pie: { donut: { size: '75%', background: 'transparent' } } }
+                }).render();
 
-                // Switch UI Views
+                // Render Sleek Apex Chart 2
+                new ApexCharts(document.getElementById('chart-classification'), {
+                    series: [classCounts.vip, classCounts.warm, classCounts.cold],
+                    chart: { type: 'donut', height: 240, fontFamily: 'Cairo' },
+                    labels: ['VIP 🔥', 'WARM 🪵', 'COLD ❄️'],
+                    colors: ['#10b981', '#f59e0b', '#475569'],
+                    stroke: { show: false },
+                    dataLabels: { enabled: false },
+                    legend: { position: 'bottom', labels: { colors: '#94a3b8' }, fontSize: '11px' },
+                    plotOptions: { pie: { donut: { size: '75%', background: 'transparent' } } }
+                }).render();
+
+                // View Toggle
                 document.getElementById('loader').classList.add('hidden');
                 document.getElementById('dashboard-content').classList.remove('hidden');
 
             } catch (err) {
                 console.error(err);
-                document.getElementById('loader').innerHTML = `<p class="text-red-400 font-bold">❌ خطأ في الاتصال بقاعدة البيانات. تأكد من إعدادات الـ Sheet.</p>`;
+                document.getElementById('loader').innerHTML = `<p class="text-red-400 font-bold text-xs">❌ خطأ حي في الفيتش! تأكد من نشر الـ Spreadsheet كـ CSV للعامة.</p>`;
             }
         }
 
