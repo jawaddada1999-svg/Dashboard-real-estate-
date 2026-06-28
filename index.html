@@ -3,282 +3,1236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AXON FLOW - Dashboard VIP</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- ApexCharts CDN (Modern & Sleek UI Charts) -->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Real Estate Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
-        body { font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif; }
-        /* Custom scrollbar for modern look */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #020617; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #334155; }
-    </style>
-</head>
-<body class="bg-[#030712] text-slate-100 min-h-screen antialiased flex selection:bg-amber-500/30 selection:text-white">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- Background Glow Blobs -->
-    <div class="fixed -top-40 -right-40 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
-    <div class="fixed top-1/2 left-1/4 w-80 h-80 bg-amber-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 50%, #0f172a 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
 
-    <!-- Sidebar Desktop -->
-    <aside class="hidden lg:block fixed right-0 top-0 h-full w-64 bg-[#030712]/80 border-l border-white/5 p-6 z-40 backdrop-blur-xl">
-        <div class="mb-10 flex items-center gap-2">
-            <div class="w-3 h-3 rounded-full bg-amber-500 animate-pulse"></div>
-            <div>
-                <h2 class="text-white font-bold text-xl tracking-wider font-sans">AXON FLOW</h2>
-                <p class="text-[9px] text-amber-500/70 uppercase tracking-widest font-semibold">AI Automation Agency</p>
-            </div>
-        </div>
-        <nav class="space-y-1.5">
-            <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold bg-white/[0.03] text-amber-500 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.05)] transition-all">
-                <span class="text-sm">📊</span> لوحة التحكم الرئيسيّة
-            </button>
-        </nav>
-    </aside>
+        html[dir="ltr"] body {
+            direction: ltr;
+        }
 
-    <!-- Main Content Wrapper -->
-    <div class="lg:mr-64 w-full min-h-screen flex flex-col relative z-10">
-        
-        <!-- Header -->
-        <header class="flex items-center justify-between px-6 lg:px-8 py-5 border-b border-white/5 bg-[#030712]/40 backdrop-blur-md sticky top-0 z-30">
-            <div>
-                <h1 class="text-lg lg:text-xl font-bold text-white bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">لوحة المتابعة الفورية</h1>
-                <p class="text-[11px] text-slate-400 mt-0.5">أنظمة الأتمتة العقارية الذكية لـ AXON FLOW</p>
-            </div>
-            <div class="flex items-center gap-2 bg-white/[0.02] border border-white/5 px-3 py-1.5 rounded-xl">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                <span class="text-[10px] font-mono text-slate-400">Live Data Sync</span>
-            </div>
-        </header>
+        html[dir="rtl"] body {
+            direction: rtl;
+        }
 
-        <!-- Loader -->
-        <div id="loader" class="flex-1 flex flex-col items-center justify-center py-20">
-            <div class="w-10 h-10 rounded-full border-2 border-white/5 border-t-amber-500 animate-spin mb-4"></div>
-            <p class="text-slate-400 text-xs font-medium tracking-wide">جاري استيراد وهيكلة البيانات الحية من السيرفر...</p>
-        </div>
+        .container-main {
+            display: grid;
+            grid-template-columns: 1fr;
+            min-height: 100vh;
+        }
 
-        <!-- Dashboard Content Container (Hidden till loaded) -->
-        <div id="dashboard-content" class="p-4 lg:p-8 space-y-6 flex-1 max-w-7xl w-full mx-auto hidden">
-            
-            <!-- 3 Modern Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
-                <!-- Card 1 -->
-                <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-5 flex justify-between items-center backdrop-blur-md hover:border-blue-500/20 transition-all duration-300 group">
-                    <div>
-                        <p class="text-slate-400 text-[11px] font-medium mb-1">إجمالي العملاء المحتملين</p>
-                        <p id="stat-total-leads" class="font-sans font-bold text-3xl text-white tracking-tight group-hover:text-blue-400 transition-colors">0</p>
-                    </div>
-                    <div class="p-3 rounded-xl bg-blue-500/5 text-blue-400 border border-blue-500/10 text-xl shadow-[0_0_15px_rgba(59,130,246,0.05)]">👥</div>
-                </div>
-                <!-- Card 2 -->
-                <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-5 flex justify-between items-center backdrop-blur-md hover:border-amber-500/20 transition-all duration-300 group">
-                    <div>
-                        <p class="text-slate-400 text-[11px] font-medium mb-1">المفاوضات الجارية</p>
-                        <p id="stat-active-deals" class="font-sans font-bold text-3xl text-white tracking-tight group-hover:text-amber-400 transition-colors">0</p>
-                    </div>
-                    <div class="p-3 rounded-xl bg-amber-500/5 text-amber-400 border border-amber-500/10 text-xl shadow-[0_0_15px_rgba(245,158,11,0.05)]">⏳</div>
-                </div>
-                <!-- Card 3 -->
-                <div class="bg-white/[0.02] border border-white/5 rounded-2xl p-5 flex justify-between items-center backdrop-blur-md hover:border-emerald-500/20 transition-all duration-300 group">
-                    <div>
-                        <p class="text-slate-400 text-[11px] font-medium mb-1">متوسط الميزانية المتوقعة</p>
-                        <p id="stat-avg-budget" class="font-sans font-bold text-3xl text-white tracking-tight group-hover:text-emerald-400 transition-colors">0M</p>
-                    </div>
-                    <div class="p-3 rounded-xl bg-emerald-500/5 text-emerald-400 border border-emerald-500/10 text-xl shadow-[0_0_15px_rgba(16,185,129,0.05)]">💰</div>
-                </div>
-            </div>
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: #0f172a;
+            border-right: 1px solid #334155;
+            padding: 20px;
+            z-index: 1000;
+            overflow-y: auto;
+        }
 
-            <!-- Modern Charts Section -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Status Chart Card -->
-                <div class="bg-white/[0.01] border border-white/5 rounded-2xl p-5 backdrop-blur-md">
-                    <div class="mb-4">
-                        <h3 class="text-white font-bold text-xs lg:text-sm">📊 توزيع المراحل البيعية (Pipeline)</h3>
-                        <p class="text-[10px] text-slate-500 mt-0.5">حالة تتبع الصفقات الحالية داخل السيستم</p>
-                    </div>
-                    <div id="chart-status" class="w-full min-h-[240px]"></div>
-                </div>
-                <!-- Classification Chart Card -->
-                <div class="bg-white/[0.01] border border-white/5 rounded-2xl p-5 backdrop-blur-md">
-                    <div class="mb-4">
-                        <h3 class="text-white font-bold text-xs lg:text-sm">🎯 جودة وتصنيف العملاء (Temperature)</h3>
-                        <p class="text-[10px] text-slate-500 mt-0.5">مدى جاهزية وتفاعل العميل المستهدف</p>
-                    </div>
-                    <div id="chart-classification" class="w-full min-h-[240px]"></div>
-                </div>
-            </div>
+        html[dir="ltr"] .sidebar {
+            left: auto;
+            right: 0;
+            border-right: none;
+            border-left: 1px solid #334155;
+        }
 
-            <!-- Premium Data Table -->
-            <div class="bg-white/[0.01] border border-white/5 rounded-2xl p-5 backdrop-blur-md overflow-hidden">
-                <div class="flex items-center justify-between mb-4">
-                    <div>
-                        <h3 class="text-white font-bold text-xs lg:text-sm">📂 تغذية البيانات الفورية للعملاء</h3>
-                        <p class="text-[10px] text-slate-500 mt-0.5">آخر المخرجات التي تمت فلترتها وتدقيقها آلياً</p>
-                    </div>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-right border-collapse">
-                        <thead>
-                            <tr class="border-b border-white/5 text-slate-400 text-[11px] font-semibold tracking-wider">
-                                <th class="pb-3 px-3">الاسم</th>
-                                <th class="pb-3 px-3">الهاتف</th>
-                                <th class="pb-3 px-3">الميزانية</th>
-                                <th class="pb-3 px-3">النوع المطلوب</th>
-                                <th class="pb-3 px-3">الحالة التنفيذية</th>
-                                <th class="pb-3 px-3">التصنيف</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leads-table-body" class="text-xs divide-y divide-white/[0.02]">
-                            <!-- Injected rows via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        .sidebar h2 {
+            color: #3b82f6;
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
 
-        </div>
-    </div>
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-    <!-- Logic & Charting Engine Script -->
-    <script>
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQz9JgepSHyiEXcin3VkIgx5jGnQfdTTJKxCTuAsJMslONSZcSJj1GLEkaynd4lIksZpc2ht933QUcM/pub?output=csv';
+        .sidebar nav button {
+            background-color: transparent;
+            color: #cbd5e1;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
 
-        const tagsMap = {
-            villa: 'فيلا 🏰', apartment: 'شقة 🏢', commercialshop: 'محل تجاري 🏪',
-            vip: 'VIP 🔥', warm: 'WARM 🪵', cold: 'COLD ❄️',
-            nouveau: 'جديد 🆕', encours: 'قيد التنفيذ ⏳', vendu: 'تم البيع ✅', perdu: 'غير مهتم ❌'
-        };
+        .sidebar nav button:hover {
+            background-color: #1e293b;
+            color: #3b82f6;
+        }
 
-        async function initDashboard() {
-            try {
-                const response = await fetch(csvUrl);
-                if (!response.ok) throw new Error("Failed to load Google Sheets stream");
-                const csvText = await response.text();
-                
-                const lines = csvText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-                const headers = lines[0].split(',').map(h => h.toLowerCase().trim());
-                
-                const data = lines.slice(1).map(line => {
-                    const values = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
-                    let obj = {};
-                    headers.forEach((header, idx) => {
-                        let val = values[idx] ? values[idx].replace(/^"|"$/g, '').trim() : '';
-                        obj[header] = val;
-                    });
-                    return obj;
-                });
+        .sidebar nav button.active {
+            background-color: #1e293b;
+            color: #3b82f6;
+        }
 
-                // Normalize Data Rows
-                const normalizedData = data.map(item => {
-                    const classification = (item['classification'] || item['م'] || '').toLowerCase();
-                    const status = (item['status'] || item['p'] || '').toLowerCase();
-                    const propertyType = (item['type'] || item['g'] || '').toLowerCase();
+        .main-content {
+            margin-left: 250px;
+            padding: 0;
+        }
 
-                    let normClass = 'cold';
-                    if (classification.includes('vip') || classification.includes('🔥')) normClass = 'vip';
-                    else if (classification.includes('warm') || classification.includes('🪵')) normClass = 'warm';
+        html[dir="ltr"] .main-content {
+            margin-left: 0;
+            margin-right: 250px;
+        }
 
-                    let normStatus = 'nouveau';
-                    if (status.includes('cours') || status.includes('⏳')) normStatus = 'encours';
-                    else if (status.includes('vendu') || status.includes('✅')) normStatus = 'vendu';
-                    else if (status.includes('perdu') || status.includes('❌')) normStatus = 'perdu';
+        .header {
+            background-color: #0f172a;
+            border-bottom: 1px solid #334155;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-                    let normProp = 'apartment';
-                    if (propertyType.includes('villa') || propertyType.includes('فيلا')) normProp = 'villa';
-                    else if (propertyType.includes('commercial') || propertyType.includes('محل')) normProp = 'commercialshop';
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+        }
 
-                    return {
-                        name: item['name'] || item['nom'] || 'عميل غير مسجل',
-                        phone: item['phone'] || item['téléphone'] || 'غير متوفر',
-                        budget: item['budget'] || '30M',
-                        propertyType: normProp,
-                        status: normStatus,
-                        classification: normClass
-                    };
-                });
+        .language-selector {
+            background-color: #1e293b;
+            color: #f8fafc;
+            border: 1px solid #475569;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
 
-                // Compute KPI Top Counters
-                const totalLeads = normalizedData.length;
-                const activeDeals = normalizedData.filter(d => d.status === 'encours').length;
-                const sumBudget = normalizedData.reduce((sum, d) => sum + (parseInt(d.budget) || 30), 0);
-                const avgBudget = totalLeads > 0 ? (sumBudget / totalLeads).toFixed(0) : 0;
+        .language-selector:hover {
+            border-color: #3b82f6;
+        }
 
-                document.getElementById('stat-total-leads').innerText = totalLeads;
-                document.getElementById('stat-active-deals').innerText = activeDeals;
-                document.getElementById('stat-avg-budget').innerText = avgBudget + 'M';
+        .content {
+            padding: 30px;
+            overflow-y: auto;
+        }
 
-                // Build Table Rows Dynamic Injections
-                const tableBody = document.getElementById('leads-table-body');
-                normalizedData.slice(0, 12).forEach(row => {
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-white/[0.02] border-b border-white/[0.02] transition-colors";
-                    tr.innerHTML = `
-                        <td class="py-3.5 px-3 text-white font-medium">${row.name}</td>
-                        <td class="py-3.5 px-3 text-slate-400 font-mono tracking-wide">${row.phone}</td>
-                        <td class="py-3.5 px-3 text-amber-400 font-bold font-sans">${row.budget}</td>
-                        <td class="py-3.5 px-3 text-slate-300">${tagsMap[row.propertyType]}</td>
-                        <td class="py-3.5 px-3">
-                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                                row.status==='vendu'?'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20':
-                                row.status==='encours'?'bg-amber-500/10 text-amber-400 border border-amber-500/20':
-                                'bg-blue-500/10 text-blue-400 border border-blue-500/20'
-                            }">${tagsMap[row.status]}</span>
-                        </td>
-                        <td class="py-3.5 px-3">
-                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                                row.classification==='vip'?'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20':'bg-white/5 text-slate-400 border border-white/10'
-                            }">${tagsMap[row.classification]}</span>
-                        </td>
-                    `;
-                    tableBody.appendChild(tr);
-                });
+        .time-filter-section {
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
 
-                // Compute Chart Datasets 
-                const statusCounts = { nouveau: 0, encours: 0, vendu: 0, perdu: 0 };
-                normalizedData.forEach(d => statusCounts[d.status]++);
+        .time-filter-label {
+            color: #cbd5e1;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: block;
+        }
 
-                const classCounts = { vip: 0, warm: 0, cold: 0 };
-                normalizedData.forEach(d => classCounts[d.classification]++);
+        .time-filter-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
 
-                // Render Sleek Apex Chart 1
-                new ApexCharts(document.getElementById('chart-status'), {
-                    series: [statusCounts.nouveau, statusCounts.encours, statusCounts.vendu, statusCounts.perdu],
-                    chart: { type: 'donut', height: 240, fontFamily: 'Cairo' },
-                    labels: ['جديد', 'قيد التنفيذ', 'تم البيع', 'غير مهتم'],
-                    colors: ['#3b82f6', '#f59e0b', '#10b981', '#ef4444'],
-                    stroke: { show: false },
-                    dataLabels: { enabled: false },
-                    legend: { position: 'bottom', labels: { colors: '#94a3b8' }, fontSize: '11px' },
-                    plotOptions: { pie: { donut: { size: '75%', background: 'transparent' } } }
-                }).render();
+        .time-btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #475569;
+            color: #cbd5e1;
+        }
 
-                // Render Sleek Apex Chart 2
-                new ApexCharts(document.getElementById('chart-classification'), {
-                    series: [classCounts.vip, classCounts.warm, classCounts.cold],
-                    chart: { type: 'donut', height: 240, fontFamily: 'Cairo' },
-                    labels: ['VIP 🔥', 'WARM 🪵', 'COLD ❄️'],
-                    colors: ['#10b981', '#f59e0b', '#475569'],
-                    stroke: { show: false },
-                    dataLabels: { enabled: false },
-                    legend: { position: 'bottom', labels: { colors: '#94a3b8' }, fontSize: '11px' },
-                    plotOptions: { pie: { donut: { size: '75%', background: 'transparent' } } }
-                }).render();
+        .time-btn:hover {
+            background-color: #64748b;
+        }
 
-                // View Toggle
-                document.getElementById('loader').classList.add('hidden');
-                document.getElementById('dashboard-content').classList.remove('hidden');
+        .time-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
 
-            } catch (err) {
-                console.error(err);
-                document.getElementById('loader').innerHTML = `<p class="text-red-400 font-bold text-xs">❌ خطأ حي في الفيتش! تأكد من نشر الـ Spreadsheet كـ CSV للعامة.</p>`;
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            padding: 24px;
+            border-radius: 16px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-card.blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .metric-card.orange {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .metric-card.green {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .metric-label {
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .metric-icon {
+            font-size: 36px;
+        }
+
+        .filters-section {
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            color: #cbd5e1;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .filter-select {
+            background-color: #475569;
+            color: white;
+            border: 1px solid #64748b;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:hover {
+            border-color: #3b82f6;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            border-color: #3b82f6;
+        }
+
+        .chart-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(71, 85, 105, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .legend-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .legend-values {
+            display: flex;
+            gap: 12px;
+            text-align: right;
+        }
+
+        .legend-count {
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .legend-percent {
+            color: #cbd5e1;
+            font-size: 12px;
+        }
+
+        .table-section {
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            overflow-x: auto;
+        }
+
+        .table-section h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table thead {
+            border-bottom: 1px solid #334155;
+        }
+
+        table th {
+            text-align: left;
+            padding: 12px;
+            color: #3b82f6;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #334155;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        table tbody tr:hover {
+            background-color: rgba(71, 85, 105, 0.2);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background-color: #1e293b;
+            color: #93c5fd;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .classification-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background-color: #1e293b;
+            color: #cbd5e1;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .monthly-report {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 16px;
+            padding: 30px;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .monthly-report h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .monthly-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .monthly-card {
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .monthly-card-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .monthly-card-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .growth-badge {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            border-radius: 8px;
+            padding: 12px 16px;
+            text-align: center;
+            margin-top: 12px;
+            font-weight: 700;
+        }
+
+        .property-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .property-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .property-item label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .property-item .value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-size: 18px;
+            color: #cbd5e1;
+        }
+
+        .spinner {
+            border: 4px solid rgba(59, 130, 246, 0.2);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background-color: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 200px;
+            }
+
+            html[dir="ltr"] .main-content {
+                margin-right: 200px;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
             }
         }
 
-        window.onload = initDashboard;
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -250px;
+                width: 250px;
+                height: 100vh;
+                z-index: 2000;
+                transition: left 0.3s ease;
+            }
+
+            html[dir="ltr"] .sidebar {
+                left: auto;
+                right: -250px;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            html[dir="ltr"] .sidebar.open {
+                right: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            html[dir="ltr"] .main-content {
+                margin-right: 0;
+            }
+
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .metric-value {
+                font-size: 24px;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .monthly-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-main">
+        <div class="sidebar">
+            <h2>RE Dashboard</h2>
+            <nav>
+                <button class="active">📊 <span class="menu-text"></span></button>
+                <button>📈 <span class="menu-text-2"></span></button>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1 class="header-title"></h1>
+                <select class="language-selector" id="languageSelect">
+                    <option value="ar">العربية</option>
+                    <option value="fr">Français</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+
+            <div class="content" id="content">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <span class="loading-text"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            ar: {
+                dashboard: 'لوحة التحكم',
+                analytics: 'التحليلات',
+                today: 'اليوم',
+                yesterday: 'أمس',
+                lastWeek: 'الأسبوع الماضي',
+                lastMonth: 'الشهر الماضي',
+                totalLeads: 'إجمالي العملاء',
+                activeDeals: 'الصفقات النشطة',
+                avgBudget: 'متوسط الميزانية',
+                filterByClassification: 'التصفية حسب التصنيف',
+                filterByStatus: 'التصفية حسب الحالة',
+                filterByPropertyType: 'التصفية حسب نوع العقار',
+                all: 'الكل',
+                statusDistribution: 'توزيع الحالة',
+                classificationBreakdown: 'تفصيل التصنيف',
+                paymentMethod: 'طريقة الدفع',
+                leadsTable: 'نظرة عامة على العملاء',
+                monthlyPerformance: 'تقرير الأداء الشهري',
+                thisMonth: 'هذا الشهر',
+                lastMonthText: 'الشهر الماضي',
+                villa: 'فيلا',
+                apartment: 'شقة',
+                commercialShop: 'محل تجاري',
+                vip: 'VIP 🔥',
+                warm: 'WARM 🪵',
+                cold: 'COLD ❄️',
+                nouveau: 'Nouveau 🆕',
+                enCours: 'En cours ⏳',
+                vendu: 'Vendu ✅',
+                perdu: 'Perdu ❌',
+                cash: 'Cash',
+                credit: 'Credit',
+                timeFilter: 'فلتر الوقت',
+                count: 'العدد',
+                percentage: 'النسبة',
+                apartmentCount: 'الشقق',
+                villaCount: 'الفيلات',
+                shopCount: 'المحلات التجارية',
+                soldCount: 'تم بيعه',
+                inProgressCount: 'قيد التنفيذ',
+                lostCount: 'خسرنا',
+                loading: 'جاري التحميل...',
+                error: 'خطأ في تحميل البيانات',
+                name: 'الاسم',
+                phone: 'الهاتف',
+                budget: 'الميزانية',
+                status: 'الحالة',
+                classification: 'التصنيف',
+                propertyType: 'نوع العقار',
+            },
+            fr: {
+                dashboard: 'Tableau de Bord',
+                analytics: 'Analytiques',
+                today: "Aujourd'hui",
+                yesterday: 'Hier',
+                lastWeek: 'La semaine dernière',
+                lastMonth: 'Le mois dernier',
+                totalLeads: 'Prospects Total',
+                activeDeals: 'Affaires Actives',
+                avgBudget: 'Budget Moyen',
+                filterByClassification: 'Filtrer par Classification',
+                filterByStatus: 'Filtrer par Statut',
+                filterByPropertyType: 'Filtrer par Type de Propriété',
+                all: 'Tous',
+                statusDistribution: 'Distribution du Statut',
+                classificationBreakdown: 'Répartition de la Classification',
+                paymentMethod: 'Méthode de Paiement',
+                leadsTable: 'Aperçu des Prospects',
+                monthlyPerformance: 'Rapport de Performance Mensuelle',
+                thisMonth: 'Ce mois',
+                lastMonthText: 'Le mois dernier',
+                villa: 'Villa',
+                apartment: 'Appartement',
+                commercialShop: 'Boutique Commerciale',
+                vip: 'VIP 🔥',
+                warm: 'WARM 🪵',
+                cold: 'COLD ❄️',
+                nouveau: 'Nouveau 🆕',
+                enCours: 'En cours ⏳',
+                vendu: 'Vendu ✅',
+                perdu: 'Perdu ❌',
+                cash: 'Cash',
+                credit: 'Crédit',
+                timeFilter: 'Filtre Temps',
+                count: 'Nombre',
+                percentage: 'Pourcentage',
+                apartmentCount: 'Appartements',
+                villaCount: 'Villas',
+                shopCount: 'Boutiques',
+                soldCount: 'Vendus',
+                inProgressCount: 'En cours',
+                lostCount: 'Perdus',
+                loading: 'Chargement...',
+                error: 'Erreur de chargement des données',
+                name: 'Nom',
+                phone: 'Téléphone',
+                budget: 'Budget',
+                status: 'Statut',
+                classification: 'Classification',
+                propertyType: 'Type de Propriété',
+            },
+            en: {
+                dashboard: 'Dashboard',
+                analytics: 'Analytics',
+                today: 'Today',
+                yesterday: 'Yesterday',
+                lastWeek: 'Last Week',
+                lastMonth: 'Last Month',
+                totalLeads: 'Total Leads',
+                activeDeals: 'Active Deals',
+                avgBudget: 'Average Budget',
+                filterByClassification: 'Filter by Classification',
+                filterByStatus: 'Filter by Status',
+                filterByPropertyType: 'Filter by Property Type',
+                all: 'All',
+                statusDistribution: 'Status Distribution',
+                classificationBreakdown: 'Classification Breakdown',
+                paymentMethod: 'Payment Method',
+                leadsTable: 'Leads Overview',
+                monthlyPerformance: 'Monthly Performance Report',
+                thisMonth: 'This Month',
+                lastMonthText: 'Last Month',
+                villa: 'Villa',
+                apartment: 'Apartment',
+                commercialShop: 'Commercial Shop',
+                vip: 'VIP 🔥',
+                warm: 'WARM 🪵',
+                cold: 'COLD ❄️',
+                nouveau: 'Nouveau 🆕',
+                enCours: 'In Progress ⏳',
+                vendu: 'Sold ✅',
+                perdu: 'Lost ❌',
+                cash: 'Cash',
+                credit: 'Credit',
+                timeFilter: 'Time Filter',
+                count: 'Count',
+                percentage: 'Percentage',
+                apartmentCount: 'Apartments',
+                villaCount: 'Villas',
+                shopCount: 'Shops',
+                soldCount: 'Sold',
+                inProgressCount: 'In Progress',
+                lostCount: 'Lost',
+                loading: 'Loading...',
+                error: 'Error loading data',
+                name: 'Name',
+                phone: 'Phone',
+                budget: 'Budget',
+                status: 'Status',
+                classification: 'Classification',
+                propertyType: 'Property Type',
+            }
+        };
+
+        let currentLanguage = 'ar';
+        let allData = [];
+        let chartInstances = {};
+
+        function t(key) {
+            return translations[currentLanguage][key] || key;
+        }
+
+        function updateLanguage(lang) {
+            currentLanguage = lang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.querySelector('.header-title').textContent = t('dashboard');
+            document.querySelector('.menu-text').textContent = t('dashboard');
+            document.querySelector('.menu-text-2').textContent = t('analytics');
+            document.querySelector('.loading-text').textContent = t('loading');
+            render();
+        }
+
+        async function fetchData() {
+            try {
+                const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQz9JgepSHyiEXcin3VkIgx5jGnQfdTTJKxCTuAsJMslONSZcSJj1GLEkaynd4lIksZpc2ht933QUcM/pub?output=csv');
+                const csv = await response.text();
+                const rows = csv.split('\n').map(row => {
+                    const result = [];
+                    let current = '';
+                    let insideQuotes = false;
+                    for (let i = 0; i < row.length; i++) {
+                        const char = row[i];
+                        if (char === '"') insideQuotes = !insideQuotes;
+                        else if (char === ',' && !insideQuotes) {
+                            result.push(current.trim().replace(/^"|"$/g, ''));
+                            current = '';
+                        } else current += char;
+                    }
+                    result.push(current.trim().replace(/^"|"$/g, ''));
+                    return result;
+                });
+
+                const headers = rows[0];
+                allData = rows.slice(1).map(row => {
+                    const obj = {};
+                    headers.forEach((h, i) => obj[h.toLowerCase().trim()] = (row[i] || '').trim());
+                    return obj;
+                }).filter(r => Object.values(r).some(v => v)).map(item => {
+                    const classification = (item['classification'] || '').toLowerCase();
+                    const status = (item['status'] || '').toLowerCase();
+                    const payment = (item['paiement'] || item['payment'] || '').toLowerCase();
+                    const propertyType = (item['type'] || item['property'] || '').toLowerCase();
+
+                    let normalizedClassification = 'cold';
+                    if (classification.includes('vip') || classification.includes('🔥')) normalizedClassification = 'vip';
+                    else if (classification.includes('warm') || classification.includes('🪵')) normalizedClassification = 'warm';
+
+                    let normalizedStatus = 'nouveau';
+                    if (status.includes('cours') || status.includes('⏳')) normalizedStatus = 'enCours';
+                    else if (status.includes('vendu') || status.includes('✅')) normalizedStatus = 'vendu';
+                    else if (status.includes('perdu') || status.includes('❌')) normalizedStatus = 'perdu';
+
+                    let normalizedPayment = 'cash';
+                    if (payment.includes('credit') || payment.includes('crédit')) normalizedPayment = 'credit';
+
+                    let normalizedPropertyType = 'apartment';
+                    if (propertyType.includes('villa') || propertyType.includes('فيلا')) normalizedPropertyType = 'villa';
+                    else if (propertyType.includes('commercial') || propertyType.includes('محل')) normalizedPropertyType = 'commercialShop';
+
+                    const dateString = item['date'] || new Date().toISOString().split('T')[0];
+
+                    return {
+                        name: item['name'] || item['nom'] || 'Lead',
+                        phone: item['phone'] || item['téléphone'] || '',
+                        budget: item['budget'] || '',
+                        payment: normalizedPayment,
+                        classification: normalizedClassification,
+                        status: normalizedStatus,
+                        propertyType: normalizedPropertyType,
+                        date: dateString,
+                    };
+                });
+
+                render();
+            } catch (err) {
+                document.getElementById('content').innerHTML = `<div class="error-message">${t('error')}: ${err.message}</div>`;
+            }
+        }
+
+        function getFilteredData(timeFilter, classFilter, statusFilter, propFilter) {
+            const today = new Date();
+            let startDate = new Date();
+            let endDate = new Date();
+
+            switch(timeFilter) {
+                case 'today':
+                    startDate.setHours(0, 0, 0, 0);
+                    endDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'yesterday':
+                    startDate.setDate(today.getDate() - 1);
+                    endDate.setDate(today.getDate() - 1);
+                    startDate.setHours(0, 0, 0, 0);
+                    endDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'lastWeek':
+                    startDate.setDate(today.getDate() - 7);
+                    endDate.setDate(today.getDate() - 1);
+                    break;
+                case 'lastMonth':
+                    startDate.setMonth(today.getMonth() - 1);
+                    startDate.setDate(1);
+                    endDate.setDate(0);
+                    break;
+            }
+
+            return allData.filter(item => {
+                const itemDate = new Date(item.date);
+                const matchDate = itemDate >= startDate && itemDate <= endDate;
+                const matchClass = classFilter === 'all' || item.classification === classFilter;
+                const matchStatus = statusFilter === 'all' || item.status === statusFilter;
+                const matchProp = propFilter === 'all' || item.propertyType === propFilter;
+                return matchDate && matchClass && matchStatus && matchProp;
+            });
+        }
+
+        function render() {
+            const timeFilter = document.getElementById('timeFilter')?.value || 'today';
+            const classFilter = document.getElementById('classFilter')?.value || 'all';
+            const statusFilter = document.getElementById('statusFilter')?.value || 'all';
+            const propFilter = document.getElementById('propFilter')?.value || 'all';
+
+            const filtered = getFilteredData(timeFilter, classFilter, statusFilter, propFilter);
+
+            const totalLeads = filtered.length;
+            const activeDeals = filtered.filter(d => d.status === 'enCours').length;
+            const budgetMap = { '0_60M': 30, '60_90M': 75, '90_120M': 105, '120M+': 150 };
+            const avgBudget = filtered.length > 0 ? Math.round(filtered.reduce((s, d) => s + (budgetMap[d.budget] || 30), 0) / filtered.length) : 0;
+
+            const statusData = [
+                { name: t('nouveau'), value: filtered.filter(d => d.status === 'nouveau').length, color: '#3B82F6' },
+                { name: t('enCours'), value: filtered.filter(d => d.status === 'enCours').length, color: '#F59E0B' },
+                { name: t('vendu'), value: filtered.filter(d => d.status === 'vendu').length, color: '#10B981' },
+                { name: t('perdu'), value: filtered.filter(d => d.status === 'perdu').length, color: '#EF4444' },
+            ];
+
+            const classData = [
+                { name: t('vip'), value: filtered.filter(d => d.classification === 'vip').length, color: '#10B981' },
+                { name: t('warm'), value: filtered.filter(d => d.classification === 'warm').length, color: '#F59E0B' },
+                { name: t('cold'), value: filtered.filter(d => d.classification === 'cold').length, color: '#EF4444' },
+            ];
+
+            const paymentData = [
+                { name: t('cash'), value: filtered.filter(d => d.payment === 'cash').length, color: '#3B82F6' },
+                { name: t('credit'), value: filtered.filter(d => d.payment === 'credit').length, color: '#8B5CF6' },
+            ];
+
+            const propertyData = [
+                { name: t('villa'), value: filtered.filter(d => d.propertyType === 'villa').length, color: '#EC4899' },
+                { name: t('apartment'), value: filtered.filter(d => d.propertyType === 'apartment').length, color: '#06B6D4' },
+                { name: t('commercialShop'), value: filtered.filter(d => d.propertyType === 'commercialShop').length, color: '#8B5CF6' },
+            ];
+
+            const html = `
+                <div class="time-filter-section">
+                    <label class="time-filter-label">${t('timeFilter')}</label>
+                    <div class="time-filter-buttons">
+                        <button class="time-btn ${timeFilter === 'today' ? 'active' : ''}" onclick="updateFilter('timeFilter', 'today')">${t('today')}</button>
+                        <button class="time-btn ${timeFilter === 'yesterday' ? 'active' : ''}" onclick="updateFilter('timeFilter', 'yesterday')">${t('yesterday')}</button>
+                        <button class="time-btn ${timeFilter === 'lastWeek' ? 'active' : ''}" onclick="updateFilter('timeFilter', 'lastWeek')">${t('lastWeek')}</button>
+                        <button class="time-btn ${timeFilter === 'lastMonth' ? 'active' : ''}" onclick="updateFilter('timeFilter', 'lastMonth')">${t('lastMonth')}</button>
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card blue">
+                        <div>
+                            <div class="metric-label">${t('totalLeads')}</div>
+                            <div class="metric-value">${totalLeads}</div>
+                        </div>
+                        <div class="metric-icon">👥</div>
+                    </div>
+                    <div class="metric-card orange">
+                        <div>
+                            <div class="metric-label">${t('activeDeals')}</div>
+                            <div class="metric-value">${activeDeals}</div>
+                        </div>
+                        <div class="metric-icon">🔥</div>
+                    </div>
+                    <div class="metric-card green">
+                        <div>
+                            <div class="metric-label">${t('avgBudget')}</div>
+                            <div class="metric-value">${avgBudget}M</div>
+                        </div>
+                        <div class="metric-icon">💰</div>
+                    </div>
+                </div>
+
+                <div class="filters-section">
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label class="filter-label">${t('filterByClassification')}</label>
+                            <select class="filter-select" id="classFilter" onchange="updateFilter('classFilter', this.value)">
+                                <option value="all">${t('all')}</option>
+                                <option value="vip">${t('vip')}</option>
+                                <option value="warm">${t('warm')}</option>
+                                <option value="cold">${t('cold')}</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">${t('filterByStatus')}</label>
+                            <select class="filter-select" id="statusFilter" onchange="updateFilter('statusFilter', this.value)">
+                                <option value="all">${t('all')}</option>
+                                <option value="nouveau">${t('nouveau')}</option>
+                                <option value="enCours">${t('enCours')}</option>
+                                <option value="vendu">${t('vendu')}</option>
+                                <option value="perdu">${t('perdu')}</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">${t('filterByPropertyType')}</label>
+                            <select class="filter-select" id="propFilter" onchange="updateFilter('propFilter', this.value)">
+                                <option value="all">${t('all')}</option>
+                                <option value="villa">${t('villa')}</option>
+                                <option value="apartment">${t('apartment')}</option>
+                                <option value="commercialShop">${t('commercialShop')}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>${t('statusDistribution')}</h3>
+                        <div class="chart-container">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                        <div class="chart-legend">
+                            ${statusData.map(d => `
+                                <div class="legend-item">
+                                    <div class="legend-label">
+                                        <div class="legend-color" style="background-color: ${d.color}"></div>
+                                        ${d.name}
+                                    </div>
+                                    <div class="legend-values">
+                                        <span class="legend-count">${d.value}</span>
+                                        <span class="legend-percent">${d.value > 0 ? ((d.value / filtered.length) * 100).toFixed(1) : 0}%</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>${t('classificationBreakdown')}</h3>
+                        <div class="chart-container">
+                            <canvas id="classChart"></canvas>
+                        </div>
+                        <div class="chart-legend">
+                            ${classData.map(d => `
+                                <div class="legend-item">
+                                    <div class="legend-label">
+                                        <div class="legend-color" style="background-color: ${d.color}"></div>
+                                        ${d.name}
+                                    </div>
+                                    <div class="legend-values">
+                                        <span class="legend-count">${d.value}</span>
+                                        <span class="legend-percent">${d.value > 0 ? ((d.value / filtered.length) * 100).toFixed(1) : 0}%</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>💰 ${t('paymentMethod')}</h3>
+                        <div class="chart-container">
+                            <canvas id="paymentChart"></canvas>
+                        </div>
+                        <div class="chart-legend">
+                            ${paymentData.map(d => `
+                                <div class="legend-item">
+                                    <div class="legend-label">
+                                        <div class="legend-color" style="background-color: ${d.color}"></div>
+                                        ${d.name}
+                                    </div>
+                                    <div class="legend-values">
+                                        <span class="legend-count">${d.value}</span>
+                                        <span class="legend-percent">${d.value > 0 ? ((d.value / filtered.length) * 100).toFixed(1) : 0}%</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>${t('propertyType')}</h3>
+                        <div class="chart-container">
+                            <canvas id="propertyChart"></canvas>
+                        </div>
+                        <div class="chart-legend">
+                            ${propertyData.map(d => `
+                                <div class="legend-item">
+                                    <div class="legend-label">
+                                        <div class="legend-color" style="background-color: ${d.color}"></div>
+                                        ${d.name}
+                                    </div>
+                                    <div class="legend-values">
+                                        <span class="legend-count">${d.value}</span>
+                                        <span class="legend-percent">${d.value > 0 ? ((d.value / filtered.length) * 100).toFixed(1) : 0}%</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-section">
+                    <h3>${t('leadsTable')}</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>${t('name')}</th>
+                                <th>${t('phone')}</th>
+                                <th>${t('budget')}</th>
+                                <th>${t('propertyType')}</th>
+                                <th>${t('status')}</th>
+                                <th>${t('classification')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filtered.slice(0, 12).map(row => `
+                                <tr>
+                                    <td>${row.name}</td>
+                                    <td>${row.phone}</td>
+                                    <td>${row.budget}</td>
+                                    <td>${t(row.propertyType)}</td>
+                                    <td><span class="status-badge">${t(row.status)}</span></td>
+                                    <td><span class="classification-badge">${t(row.classification)}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <p style="color: #cbd5e1; margin-top: 15px; font-size: 13px;">${t('count')}: ${filtered.length}</p>
+                </div>
+
+                <div class="monthly-report">
+                    <h2>${t('monthlyPerformance')}</h2>
+                    <div class="monthly-metrics">
+                        <div class="monthly-card">
+                            <div class="monthly-card-label">${t('thisMonth')}</div>
+                            <div class="monthly-card-value">${totalLeads}</div>
+                        </div>
+                        <div class="monthly-card">
+                            <div class="monthly-card-label">${t('lastMonthText')}</div>
+                            <div class="monthly-card-value">${allData.length - totalLeads}</div>
+                        </div>
+                    </div>
+                    <div class="property-breakdown">
+                        <div class="property-item">
+                            <label>${t('apartmentCount')}</label>
+                            <div class="value">${filtered.filter(d => d.propertyType === 'apartment').length}</div>
+                        </div>
+                        <div class="property-item">
+                            <label>${t('villaCount')}</label>
+                            <div class="value">${filtered.filter(d => d.propertyType === 'villa').length}</div>
+                        </div>
+                        <div class="property-item">
+                            <label>${t('shopCount')}</label>
+                            <div class="value">${filtered.filter(d => d.propertyType === 'commercialShop').length}</div>
+                        </div>
+                    </div>
+                    <div class="property-breakdown">
+                        <div class="property-item">
+                            <label>${t('soldCount')}</label>
+                            <div class="value" style="color: #4ade80;">${filtered.filter(d => d.status === 'vendu').length}</div>
+                        </div>
+                        <div class="property-item">
+                            <label>${t('inProgressCount')}</label>
+                            <div class="value" style="color: #fbbf24;">${filtered.filter(d => d.status === 'enCours').length}</div>
+                        </div>
+                        <div class="property-item">
+                            <label>${t('lostCount')}</label>
+                            <div class="value" style="color: #f87171;">${filtered.filter(d => d.status === 'perdu').length}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('content').innerHTML = html;
+
+            setTimeout(() => {
+                if (chartInstances.status) chartInstances.status.destroy();
+                if (chartInstances.class) chartInstances.class.destroy();
+                if (chartInstances.payment) chartInstances.payment.destroy();
+                if (chartInstances.property) chartInstances.property.destroy();
+
+                chartInstances.status = createDoughnutChart('statusChart', statusData);
+                chartInstances.class = createDoughnutChart('classChart', classData);
+                chartInstances.payment = createDoughnutChart('paymentChart', paymentData);
+                chartInstances.property = createDoughnutChart('propertyChart', propertyData);
+            }, 100);
+        }
+
+        function createDoughnutChart(canvasId, data) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            return new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.map(d => d.name),
+                    datasets: [{
+                        data: data.map(d => d.value),
+                        backgroundColor: data.map(d => d.color),
+                        borderColor: '#0f172a',
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function updateFilter(type, value) {
+            render();
+        }
+
+        document.getElementById('languageSelect').addEventListener('change', (e) => {
+            updateLanguage(e.target.value);
+        });
+
+        updateLanguage('ar');
+        fetchData();
     </script>
 </body>
 </html>
