@@ -428,116 +428,7 @@
             text-align: right;
         }
 
-        /* MONTHLY REPORT */
-        .monthly-report {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(249, 115, 22, 0.08) 100%);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 16px;
-            padding: 30px;
-            backdrop-filter: blur(20px);
-        }
-
-        .report-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 22px;
-            font-weight: 800;
-            color: #f1f5f9;
-            margin-bottom: 20px;
-        }
-
-        .report-filter-group {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .report-filter-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
-            padding: 10px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .report-filter-btn:hover {
-            background: rgba(59, 130, 246, 0.1);
-            border-color: rgba(59, 130, 246, 0.3);
-        }
-
-        .report-filter-btn.active {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: rgba(59, 130, 246, 0.5);
-            color: #f1f5f9;
-        }
-
-        .report-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-
-        .report-card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .report-card:hover {
-            border-color: rgba(59, 130, 246, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .report-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-
-        .report-value {
-            font-family: 'Poppins', sans-serif;
-            font-size: 28px;
-            font-weight: 800;
-            color: #f1f5f9;
-        }
-
-        .comparison-box {
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(59, 130, 246, 0.3);
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .comparison-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #94a3b8;
-            margin-bottom: 10px;
-        }
-
-        .comparison-value {
-            font-family: 'Poppins', sans-serif;
-            font-size: 36px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #3b82f6, #f97316);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* TABLE */
+        /* TABLE CONTAINER */
         .table-container {
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -613,32 +504,117 @@
             border-color: rgba(6, 182, 212, 0.3);
         }
 
-        /* LOADING */
-        .loading {
+        /* MONTHLY COMPARISON TABLE */
+        .monthly-comparison {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(249, 115, 22, 0.08) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            margin-top: 20px;
+        }
+
+        .comparison-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: #f1f5f9;
+            margin-bottom: 30px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            min-height: 60vh;
-            gap: 20px;
+            gap: 12px;
         }
 
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(59, 130, 246, 0.2);
-            border-top-color: #3b82f6;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        .comparison-table-wrapper {
+            overflow-x: auto;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
         }
 
-        .loading-text {
-            font-size: 16px;
-            color: #94a3b8;
+        .comparison-table thead {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(249, 115, 22, 0.1) 100%);
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .comparison-table th {
+            padding: 16px 16px;
+            text-align: left;
+            color: #60a5fa;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .comparison-table th:last-child {
+            border-right: none;
+        }
+
+        .comparison-table td {
+            padding: 16px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+            font-size: 14px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comparison-table td:last-child {
+            border-right: none;
+        }
+
+        .comparison-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.15);
+        }
+
+        .comparison-table td.metric-name {
             font-weight: 600;
+            color: #e2e8f0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .comparison-table td.value-previous,
+        .comparison-table td.value-current {
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .comparison-table td.value-growth {
+            text-align: center;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .growth-positive {
+            color: #10b981;
+            font-size: 16px;
+        }
+
+        .growth-negative {
+            color: #ef4444;
+            font-size: 16px;
+        }
+
+        .growth-neutral {
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .growth-percent {
+            font-weight: 700;
         }
 
         /* RESPONSIVE */
@@ -673,10 +649,6 @@
             .filters-section {
                 grid-template-columns: 1fr;
             }
-
-            .report-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
 
         @media (max-width: 768px) {
@@ -704,12 +676,16 @@
                 grid-template-columns: 1fr;
             }
 
-            .report-grid {
-                grid-template-columns: 1fr;
-            }
-
             .time-buttons {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .monthly-comparison {
+                padding: 20px;
+            }
+
+            .comparison-title {
+                font-size: 18px;
             }
         }
     </style>
@@ -814,6 +790,7 @@
                                     <option value="Apartment">شقة 🏢</option>
                                     <option value="Villa">فيلا 🏰</option>
                                     <option value="Commercial">محل تجاري 🏪</option>
+                                    <option value="Land">أرض 📍</option>
                                 </select>
                             </div>
                             <div class="chart-title">توزيع نوع العقار</div>
@@ -824,24 +801,7 @@
                         </div>
                     </div>
 
-                    <!-- MONTHLY REPORT -->
-                    <div class="monthly-report">
-                        <div class="report-title">📊 التقرير الشهري</div>
-                        
-                        <div class="report-filter-group">
-                            <button class="report-filter-btn active" onclick="setReportPeriod('current')">هذا الشهر</button>
-                            <button class="report-filter-btn" onclick="setReportPeriod('previous')">الشهر الماضي</button>
-                        </div>
-
-                        <div class="report-grid" id="monthlyReport"></div>
-
-                        <div class="comparison-box">
-                            <div class="comparison-label">مقارنة الأداء</div>
-                            <div class="comparison-value" id="comparisonValue">0%</div>
-                        </div>
-                    </div>
-
-                    <!-- TABLE -->
+                    <!-- LEADS TABLE -->
                     <div class="table-container">
                         <div class="table-title">📋 جدول العملاء</div>
                         <table>
@@ -857,6 +817,26 @@
                             </thead>
                             <tbody id="leadsTableBody"></tbody>
                         </table>
+                    </div>
+
+                    <!-- MONTHLY COMPARISON TABLE -->
+                    <div class="monthly-comparison">
+                        <div class="comparison-title">
+                            📊 جدول المقارنة الشهري المفصل
+                        </div>
+                        <div class="comparison-table-wrapper">
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>المؤشر / الفئة</th>
+                                        <th>الشهر الماضي</th>
+                                        <th>هذا الشهر</th>
+                                        <th>نسبة التطور %</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="comparisonTableBody"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -876,26 +856,7 @@
         let allData = [];
         let currentLanguage = 'ar';
         let currentTimeFilter = 'today';
-        let currentReportPeriod = 'current';
         let chartInstances = {};
-
-        const translations = {
-            ar: {
-                totalClients: 'مجموع العملاء',
-                avgBudget: 'متوسط الميزانية',
-                vipClients: 'عملاء VIP',
-            },
-            en: {
-                totalClients: 'Total Clients',
-                avgBudget: 'Average Budget',
-                vipClients: 'VIP Clients',
-            },
-            fr: {
-                totalClients: 'Total Clients',
-                avgBudget: 'Budget Moyen',
-                vipClients: 'Clients VIP',
-            }
-        };
 
         // Extract budget number
         function parseBudget(budgetStr) {
@@ -941,6 +902,134 @@
 
                 return classMatch && statusMatch && propertyMatch && searchMatch;
             });
+        }
+
+        // Get current month data
+        function getCurrentMonthData() {
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+
+            return allData.filter(item => {
+                const itemDate = new Date(item['date'] || today);
+                return itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear;
+            });
+        }
+
+        // Get previous month data
+        function getPreviousMonthData() {
+            const today = new Date();
+            let prevMonth = today.getMonth() - 1;
+            let prevYear = today.getFullYear();
+            if (prevMonth < 0) {
+                prevMonth = 11;
+                prevYear--;
+            }
+
+            return allData.filter(item => {
+                const itemDate = new Date(item['date'] || today);
+                return itemDate.getMonth() === prevMonth && itemDate.getFullYear() === prevYear;
+            });
+        }
+
+        // Calculate growth percentage
+        function calculateGrowth(current, previous) {
+            if (previous === 0) return current > 0 ? 100 : 0;
+            return (((current - previous) / previous) * 100).toFixed(1);
+        }
+
+        // Create growth indicator
+        function createGrowthIndicator(growth) {
+            const growthNum = parseFloat(growth);
+            if (growthNum > 0) {
+                return `<span class="growth-positive">📈</span> <span class="growth-percent">${growth}%</span>`;
+            } else if (growthNum < 0) {
+                return `<span class="growth-negative">📉</span> <span class="growth-percent">${growth}%</span>`;
+            } else {
+                return `<span class="growth-neutral">➖</span> <span class="growth-percent">0%</span>`;
+            }
+        }
+
+        // Render comparison table
+        function renderComparisonTable() {
+            const currentData = getCurrentMonthData();
+            const previousData = getPreviousMonthData();
+
+            const metrics = [
+                {
+                    name: '👥 مجموع العملاء',
+                    current: currentData.length,
+                    previous: previousData.length
+                },
+                {
+                    name: '🏢 الشقق',
+                    current: currentData.filter(d => (d['type'] || '').includes('Apartment')).length,
+                    previous: previousData.filter(d => (d['type'] || '').includes('Apartment')).length
+                },
+                {
+                    name: '🏰 الفيلات',
+                    current: currentData.filter(d => (d['type'] || '').includes('Villa')).length,
+                    previous: previousData.filter(d => (d['type'] || '').includes('Villa')).length
+                },
+                {
+                    name: '🏪 المحلات التجارية',
+                    current: currentData.filter(d => (d['type'] || '').includes('Commercial')).length,
+                    previous: previousData.filter(d => (d['type'] || '').includes('Commercial')).length
+                },
+                {
+                    name: '📍 الأراضي',
+                    current: currentData.filter(d => (d['type'] || '').includes('Land')).length,
+                    previous: previousData.filter(d => (d['type'] || '').includes('Land')).length
+                },
+                {
+                    name: '🆕 العملاء الجدد',
+                    current: currentData.filter(d => (d['status'] || '').includes('Nouveau')).length,
+                    previous: previousData.filter(d => (d['status'] || '').includes('Nouveau')).length
+                },
+                {
+                    name: '⏳ الصفقات قيد التنفيذ',
+                    current: currentData.filter(d => (d['status'] || '').includes('cours')).length,
+                    previous: previousData.filter(d => (d['status'] || '').includes('cours')).length
+                },
+                {
+                    name: '✅ الصفقات المبرمة',
+                    current: currentData.filter(d => (d['status'] || '').includes('Vendu')).length,
+                    previous: previousData.filter(d => (d['status'] || '').includes('Vendu')).length
+                },
+                {
+                    name: '❌ الصفقات المفقودة',
+                    current: currentData.filter(d => (d['status'] || '').includes('Perdu')).length,
+                    previous: previousData.filter(d => (d['status'] || '').includes('Perdu')).length
+                },
+                {
+                    name: '🔥 العملاء VIP',
+                    current: currentData.filter(d => (d['classification'] || '').includes('VIP')).length,
+                    previous: previousData.filter(d => (d['classification'] || '').includes('VIP')).length
+                },
+                {
+                    name: '🪵 العملاء WARM',
+                    current: currentData.filter(d => (d['classification'] || '').includes('WARM')).length,
+                    previous: previousData.filter(d => (d['classification'] || '').includes('WARM')).length
+                },
+                {
+                    name: '❄️ العملاء COLD',
+                    current: currentData.filter(d => (d['classification'] || '').includes('COLD')).length,
+                    previous: previousData.filter(d => (d['classification'] || '').includes('COLD')).length
+                }
+            ];
+
+            const tbody = document.getElementById('comparisonTableBody');
+            tbody.innerHTML = metrics.map(metric => {
+                const growth = calculateGrowth(metric.current, metric.previous);
+                return `
+                    <tr>
+                        <td class="metric-name">${metric.name}</td>
+                        <td class="value-previous">${metric.previous}</td>
+                        <td class="value-current">${metric.current}</td>
+                        <td class="value-growth">${createGrowthIndicator(growth)}</td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         // Update metrics
@@ -1003,12 +1092,12 @@
                 'شقة 🏢': filtered.filter(d => (d['type'] || '').includes('Apartment')).length,
                 'فيلا 🏰': filtered.filter(d => (d['type'] || '').includes('Villa')).length,
                 'محل تجاري 🏪': filtered.filter(d => (d['type'] || '').includes('Commercial')).length,
+                'أرض 📍': filtered.filter(d => (d['type'] || '').includes('Land')).length,
             };
 
             renderCharts(classData, statusData, propertyData);
             renderLegends(classData, statusData, propertyData);
             renderLeadsTable(filtered);
-            updateMonthlyReport();
         }
 
         // Render charts
@@ -1074,7 +1163,7 @@
                     labels: Object.keys(propertyData),
                     datasets: [{
                         data: Object.values(propertyData),
-                        backgroundColor: colors.slice(0, 3),
+                        backgroundColor: colors.slice(0, 4),
                         borderColor: 'rgba(255, 255, 255, 0.1)',
                         borderWidth: 2,
                     }]
@@ -1131,57 +1220,6 @@
             `).join('');
         }
 
-        // Update monthly report
-        function updateMonthlyReport() {
-            const filtered = getFilteredData();
-            const totalClients = filtered.length;
-            const apartments = filtered.filter(d => (d['type'] || '').includes('Apartment')).length;
-            const villas = filtered.filter(d => (d['type'] || '').includes('Villa')).length;
-            const commercial = filtered.filter(d => (d['type'] || '').includes('Commercial')).length;
-            
-            const vipCount = filtered.filter(d => (d['classification'] || '').includes('VIP')).length;
-            const warmCount = filtered.filter(d => (d['classification'] || '').includes('WARM')).length;
-            const coldCount = filtered.filter(d => (d['classification'] || '').includes('COLD')).length;
-
-            document.getElementById('monthlyReport').innerHTML = `
-                <div class="report-card">
-                    <div class="report-label">👥 مجموع العملاء</div>
-                    <div class="report-value">${totalClients}</div>
-                </div>
-                <div class="report-card">
-                    <div class="report-label">🏢 الشقق</div>
-                    <div class="report-value">${apartments}</div>
-                </div>
-                <div class="report-card">
-                    <div class="report-label">🏰 الفيلات</div>
-                    <div class="report-value">${villas}</div>
-                </div>
-                <div class="report-card">
-                    <div class="report-label">🏪 المحلات</div>
-                    <div class="report-value">${commercial}</div>
-                </div>
-                <div class="report-card">
-                    <div class="report-label">🔥 VIP</div>
-                    <div class="report-value" style="color: #f87171;">${vipCount}</div>
-                </div>
-                <div class="report-card">
-                    <div class="report-label">🪵 WARM</div>
-                    <div class="report-value" style="color: #fb923c;">${warmCount}</div>
-                </div>
-                <div class="report-card">
-                    <div class="report-label">❄️ COLD</div>
-                    <div class="report-value" style="color: #67e8f9;">${coldCount}</div>
-                </div>
-            `;
-
-            // Calculate comparison
-            const previousClients = allData.length - totalClients;
-            const percentageChange = previousClients > 0 ? 
-                (((totalClients - previousClients) / previousClients) * 100).toFixed(1) : 0;
-            
-            document.getElementById('comparisonValue').textContent = `${percentageChange > 0 ? '+' : ''}${percentageChange}%`;
-        }
-
         // Switch section
         function switchSection(section) {
             document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
@@ -1199,18 +1237,11 @@
             updateDashboard();
         }
 
-        // Set report period
-        function setReportPeriod(period) {
-            currentReportPeriod = period;
-            document.querySelectorAll('.report-filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            updateMonthlyReport();
-        }
-
         // Main update
         function updateDashboard() {
             updateMetrics();
             updateCharts();
+            renderComparisonTable();
         }
 
         // Event listeners
