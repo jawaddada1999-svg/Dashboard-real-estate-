@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AXON FLOW Dashboard - لوحة التحكم</title>
+<title>Real Estate Dashboard - لوحة التحكم</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -132,7 +132,7 @@
     .status-banner.loading { display: block; background: rgba(0,210,255,0.08); border: 1px solid rgba(0,210,255,0.35); color: #7dd3fc; }
     .status-banner.error { display: block; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.4); color: #fca5a5; }
 
-    .time-filter-row { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; margin-bottom: 5px; }
+    .time-filter-row { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; }
     .time-btn {
         background: rgba(255,255,255,0.04);
         border: 1px solid #1e293b;
@@ -183,7 +183,7 @@
     .kpi-card.kpi-orange .kpi-icon { background: #f2994a !important; color: #1a0f00 !important; box-shadow: 0 0 20px rgba(242,153,74,0.6); }
 
     .kpi-content { display: flex; justify-content: space-between; align-items: flex-start; }
-    .kpi-label { font-size: 13px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 10px; }
+    .kpi-label { font-size: 12px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 10px; }
     .kpi-value { font-family: 'Poppins', sans-serif; font-size: 36px; font-weight: 800; color: #ffffff; line-height: 1; }
     .kpi-icon {
         width: 48px; height: 48px; border-radius: 12px;
@@ -196,7 +196,7 @@
         gap: 22px;
         width: 100%;
     }
-    .dual-grid { margin-bottom: 10px; gap: 16px; }
+    .dual-grid { margin-bottom: 24px; gap: 16px; }
     @media (max-width: 900px) {
         .dual-grid, .charts-grid { grid-template-columns: 1fr; }
     }
@@ -367,7 +367,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo">📊</div>
-            <div class="sidebar-title">AXON FLOW</div>
+            <div class="sidebar-title">Dashboard</div>
         </div>
         <nav class="sidebar-menu">
             <button class="menu-btn active" id="btn-dashboard" onclick="switchSection('dashboard')">📊 <span id="menu-dashboard">لوحة التحكم</span></button>
@@ -416,7 +416,7 @@
                         <select class="filter-select" id="statusFilter" onchange="updateDashboard()">
                             <option value="all" id="opt-status-all">الكل</option>
                             <option value="Nouveau">Nouveau 🆕</option>
-                            <option value="En cours">En cours ⏳</option>
+                            <option value="EnCours">En cours ⏳</option>
                             <option value="Vendu">Vendu ✅</option>
                             <option value="Perdu">Perdu ❌</option>
                         </select>
@@ -800,8 +800,8 @@
 
             var timeMatch = matchesTimeFilter(item);
             var classMatch = classFilter === 'all' || cls.includes(classFilter);
-            var statusMatch = statusFilter === 'all' || stat.toLowerCase().includes(statusFilter.toLowerCase());
-            var propertyMatch = propertyFilter === 'all' || typ.toLowerCase().includes(propertyFilter.toLowerCase());
+            var statusMatch = statusFilter === 'all' || stat.includes(statusFilter);
+            var propertyMatch = propertyFilter === 'all' || typ.includes(propertyFilter);
             var searchMatch = !searchTerm ||
                 name.toLowerCase().includes(searchTerm) ||
                 phone.includes(searchTerm);
@@ -853,18 +853,18 @@
     function getStatusData() {
         var filtered = getFilteredData();
         return [
-            { name: 'Nouveau 🆕', value: filtered.filter(function (d) { return field(d, 'status').toLowerCase().includes('nouveau'); }).length, color: NEON.blue },
-            { name: 'En cours ⏳', value: filtered.filter(function (d) { return field(d, 'status').toLowerCase().includes('cours'); }).length, color: NEON.yellow },
-            { name: 'Vendu ✅', value: filtered.filter(function (d) { return field(d, 'status').toLowerCase().includes('vendu'); }).length, color: NEON.green },
-            { name: 'Perdu ❌', value: filtered.filter(function (d) { return field(d, 'status').toLowerCase().includes('perdu'); }).length, color: NEON.red }
+            { name: 'Nouveau 🆕', value: filtered.filter(function (d) { return field(d, 'status').includes('Nouveau'); }).length, color: NEON.blue },
+            { name: 'En cours ⏳', value: filtered.filter(function (d) { return field(d, 'status').includes('cours'); }).length, color: NEON.yellow },
+            { name: 'Vendu ✅', value: filtered.filter(function (d) { return field(d, 'status').includes('Vendu'); }).length, color: NEON.green },
+            { name: 'Perdu ❌', value: filtered.filter(function (d) { return field(d, 'status').includes('Perdu'); }).length, color: NEON.red }
         ];
     }
     function getPropertyData() {
         var filtered = getFilteredData();
         return [
-            { name: 'شقة 🏢', value: filtered.filter(function (d) { return field(d, 'type').toLowerCase().includes('apartment'); }).length, color: NEON.blue },
-            { name: 'فيلا 🏰', value: filtered.filter(function (d) { return field(d, 'type').toLowerCase().includes('villa'); }).length, color: NEON.purple },
-            { name: 'محل تجاري 🏪', value: filtered.filter(function (d) { return field(d, 'type').toLowerCase().includes('commercial'); }).length, color: NEON.pink }
+            { name: 'شقة 🏢', value: filtered.filter(function (d) { return field(d, 'type').includes('Apartment'); }).length, color: NEON.blue },
+            { name: 'فيلا 🏰', value: filtered.filter(function (d) { return field(d, 'type').includes('Villa'); }).length, color: NEON.purple },
+            { name: 'محل تجاري 🏪', value: filtered.filter(function (d) { return field(d, 'type').includes('Commercial'); }).length, color: NEON.pink }
         ];
     }
 
@@ -874,9 +874,9 @@
         var visible = dataset.filter(function (d) { return d.value > 0; });
         var total = dataset.reduce(function (s, d) { return s + d.value; }, 0);
         var size = 100;
-        var cx = size / 2, cy = size / 2, r = 38, strokeW = 14;
+        var cx = size / 2, cy = size / 2, r = 40, strokeW = 18;
         var circumference = 2 * Math.PI * r;
-        var gapDeg = visible.length > 1 ? 4 : 0;
+        var gapDeg = visible.length > 1 ? 3 : 0;
         var gapLen = (gapDeg / 360) * circumference;
 
         if (total === 0) {
@@ -921,7 +921,7 @@
         function build(dataset) {
             var total = totalOf(dataset);
             return dataset.map(function (item) {
-                var pct = total > 1 ? ((item.value / total) * 100).toFixed(0) : '0';
+                var pct = ((item.value / total) * 100).toFixed(0);
                 return '<div class="legend-row"><div class="legend-left"><span class="legend-dot" style="background:' + item.color + '"></span><span class="legend-name">' + item.name + '</span></div><span class="legend-num">' + item.value + ' (' + pct + '%)</span></div>';
             }).join('');
         }
@@ -963,9 +963,9 @@
 
         var rows = [
             { label: t('mTotal'), current: cur.length, previous: prev.length },
-            { label: t('mApt'), current: cur.filter(function (d) { return field(d, 'type').toLowerCase().includes('apartment'); }).length, previous: prev.filter(function (d) { return field(d, 'type').toLowerCase().includes('apartment'); }).length },
-            { label: t('mVilla'), current: cur.filter(function (d) { return field(d, 'type').toLowerCase().includes('villa'); }).length, previous: prev.filter(function (d) { return field(d, 'type').toLowerCase().includes('villa'); }).length },
-            { label: t('mShop'), current: cur.filter(function (d) { return field(d, 'type').toLowerCase().includes('commercial'); }).length, previous: prev.filter(function (d) { return field(d, 'type').toLowerCase().includes('commercial'); }).length },
+            { label: t('mApt'), current: cur.filter(function (d) { return field(d, 'type').includes('Apartment'); }).length, previous: prev.filter(function (d) { return field(d, 'type').includes('Apartment'); }).length },
+            { label: t('mVilla'), current: cur.filter(function (d) { return field(d, 'type').includes('Villa'); }).length, previous: prev.filter(function (d) { return field(d, 'type').includes('Villa'); }).length },
+            { label: t('mShop'), current: cur.filter(function (d) { return field(d, 'type').includes('Commercial'); }).length, previous: prev.filter(function (d) { return field(d, 'type').includes('Commercial'); }).length },
             { label: t('mVip'), current: cur.filter(function (d) { return field(d, 'classification').includes('VIP'); }).length, previous: prev.filter(function (d) { return field(d, 'classification').includes('VIP'); }).length },
             { label: t('mWarm'), current: cur.filter(function (d) { return field(d, 'classification').includes('WARM'); }).length, previous: prev.filter(function (d) { return field(d, 'classification').includes('WARM'); }).length },
             { label: t('mCold'), current: cur.filter(function (d) { return field(d, 'classification').includes('COLD'); }).length, previous: prev.filter(function (d) { return field(d, 'classification').includes('COLD'); }).length }
