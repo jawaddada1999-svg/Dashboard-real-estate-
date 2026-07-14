@@ -339,11 +339,12 @@
     .growth-down { color: #ef4444; }
     .growth-flat { color: #94a3b8; }
 
-    @media (max-width: 1200px) { .dual-grid, .charts-grid { grid-template-columns: repeat(2, 1fr); } }
-
     @media (max-width: 900px) {
         .app-shell { flex-direction: column; }
-        .sidebar { position: relative; width: 100%; height: auto; border-inline-end: none; border-bottom: 1px solid #1e293b; }
+        .sidebar {
+            position: relative; width: 100%; height: auto;
+            border-inline-end: none; border-bottom: 1px solid #1e293b;
+        }
         .main-content { margin-inline-start: 0; }
         .sidebar-menu { flex-direction: row; flex-wrap: wrap; }
         .menu-btn { flex: 1; min-width: 140px; }
