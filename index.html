@@ -21,7 +21,12 @@
     ::-webkit-scrollbar-thumb { background: #00d2ff; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
 
-    .app-shell { display: flex; width: 100%; min-height: 100vh; }
+    /* ============ LAYOUT — FULL WIDTH FIX (RTL SAFE) ============ */
+    .app-shell {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+    }
 
     .sidebar {
         width: 260px;
@@ -38,19 +43,24 @@
     }
 
     .sidebar-header {
-        display: flex; align-items: center; gap: 12px;
-        margin-bottom: 36px; padding-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 36px;
+        padding-bottom: 20px;
         border-bottom: 1px solid #1e293b;
     }
 
     .sidebar-logo {
-        width: 44px; height: 44px; border-radius: 12px;
+        width: 44px; height: 44px;
+        border-radius: 12px;
         background: linear-gradient(135deg, #00d2ff, #9b51e0);
         display: flex; align-items: center; justify-content: center;
         font-size: 22px; font-weight: 800; color: #020617;
     }
 
     .sidebar-title { font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 800; color: #ffffff; }
+
     .sidebar-menu { display: flex; flex-direction: column; gap: 12px; }
 
     .menu-btn {
@@ -60,15 +70,23 @@
         padding: 14px 16px;
         border-radius: 12px;
         cursor: pointer;
-        font-size: 14px; font-weight: 700;
+        font-size: 14px;
+        font-weight: 700;
         transition: all .25s ease;
         display: flex; align-items: center; gap: 12px;
-        text-align: start; width: 100%;
+        text-align: start;
+        width: 100%;
     }
 
     .menu-btn:hover { background: rgba(0,210,255,0.08); border-color: rgba(0,210,255,0.3); color: #00d2ff; }
-    .menu-btn.active { background: rgba(0,210,255,0.15); border-color: rgba(0,210,255,0.5); color: #5eead4; }
 
+    .menu-btn.active {
+        background: rgba(0,210,255,0.15);
+        border-color: rgba(0,210,255,0.5);
+        color: #5eead4;
+    }
+
+    /* Main content takes 100% of remaining space — the RTL shrink fix */
     .main-content {
         flex: 1 1 0%;
         width: 100%;
@@ -80,17 +98,24 @@
     }
 
     .header {
-        position: sticky; top: 0; z-index: 100;
+        position: sticky;
+        top: 0;
+        z-index: 100;
         background: rgba(2, 6, 23, 0.9);
         backdrop-filter: blur(14px);
         border-bottom: 1px solid #1e293b;
         padding: 24px 32px;
-        display: flex; justify-content: space-between; align-items: center;
-        gap: 20px; flex-wrap: wrap;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
     }
 
     .header-title { font-family: 'Poppins', sans-serif; font-size: 30px; font-weight: 800; color: #ffffff; }
+
     .header-controls { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
     .search-wrap { position: relative; }
 
     .search-input {
@@ -106,8 +131,12 @@
     html[dir="rtl"] .search-input { padding: 11px 40px 11px 16px; }
 
     .search-icon {
-        position: absolute; top: 50%; transform: translateY(-50%);
-        inset-inline-start: 14px; color: #64748b; font-size: 14px; pointer-events: none;
+        position: absolute;
+        top: 50%; transform: translateY(-50%);
+        inset-inline-start: 14px;
+        color: #64748b;
+        font-size: 14px;
+        pointer-events: none;
     }
 
     .search-input:focus { outline: none; border-color: #00d2ff; box-shadow: 0 0 0 3px rgba(0,210,255,0.15); }
@@ -126,13 +155,28 @@
     .language-selector:hover { border-color: #00d2ff; }
     .language-selector option { background: #0f172a; color: #f1f5f9; }
 
-    .content { flex: 1; width: 100%; padding: 32px; display: flex; flex-direction: column; gap: 28px; overflow-y: auto; }
+    .content {
+        flex: 1;
+        width: 100%;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        overflow-y: auto;
+    }
 
+    /* ============ STATUS BANNER ============ */
     .status-banner { display: none; padding: 16px 20px; border-radius: 12px; font-size: 14px; font-weight: 700; }
     .status-banner.loading { display: block; background: rgba(0,210,255,0.08); border: 1px solid rgba(0,210,255,0.35); color: #7dd3fc; }
     .status-banner.error { display: block; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.4); color: #fca5a5; }
 
-    .time-filter-row { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; }
+    /* ============ TIME FILTER BUTTONS ============ */
+    .time-filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        width: 100%;
+    }
     .time-btn {
         background: rgba(255,255,255,0.04);
         border: 1px solid #1e293b;
@@ -140,7 +184,8 @@
         padding: 10px 18px;
         border-radius: 10px;
         cursor: pointer;
-        font-size: 13px; font-weight: 700;
+        font-size: 13px;
+        font-weight: 700;
         transition: all .2s ease;
     }
     .time-btn:hover { border-color: rgba(242,153,74,0.4); color: #fdba74; }
@@ -151,7 +196,13 @@
         box-shadow: 0 0 0 1px rgba(242,153,74,0.25);
     }
 
-    .kpi-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; width: 100%; }
+    /* ============ KPI CARD — single, orange accent ============ */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+        width: 100%;
+    }
 
     .kpi-card {
         background: rgba(30, 41, 59, 0.45);
@@ -201,6 +252,7 @@
         .dual-grid, .charts-grid { grid-template-columns: 1fr; }
     }
 
+    /* ============ FILTERS + CHARTS card ============ */
     .filter-chart-card {
         background: rgba(30, 41, 59, 0.45);
         border: 1px solid #1e293b;
@@ -274,6 +326,7 @@
     .legend-name { color: #cbd5e1; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .legend-num { color: #ffffff; font-weight: 800; flex-shrink: 0; }
 
+    /* ============ CLIENTS TABLE ============ */
     .table-card {
         background: rgba(30, 41, 59, 0.45);
         border: 1px solid #1e293b;
@@ -313,6 +366,7 @@
     .badge-cold { background: rgba(6,182,212,0.15); color: #67e8f9; border-color: rgba(6,182,212,0.35); }
     .empty-row td { text-align: center; padding: 30px; color: #64748b; font-weight: 700; }
 
+    /* ============ MONTHLY COMPARISON (last section) ============ */
     .comparison-card {
         background: linear-gradient(135deg, rgba(0,210,255,0.06), rgba(155,81,224,0.05));
         border: 1px solid rgba(0,210,255,0.2);
@@ -339,11 +393,13 @@
     .growth-down { color: #ef4444; }
     .growth-flat { color: #94a3b8; }
 
-    @media (max-width: 1200px) { .dual-grid, .charts-grid { grid-template-columns: repeat(2, 1fr); } }
-
+    /* ============ RESPONSIVE ============ */
     @media (max-width: 900px) {
         .app-shell { flex-direction: column; }
-        .sidebar { position: relative; width: 100%; height: auto; border-inline-end: none; border-bottom: 1px solid #1e293b; }
+        .sidebar {
+            position: relative; width: 100%; height: auto;
+            border-inline-end: none; border-bottom: 1px solid #1e293b;
+        }
         .main-content { margin-inline-start: 0; }
         .sidebar-menu { flex-direction: row; flex-wrap: wrap; }
         .menu-btn { flex: 1; min-width: 140px; }
@@ -364,6 +420,7 @@
 </head>
 <body>
 <div class="app-shell">
+    <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo">📊</div>
@@ -375,6 +432,7 @@
         </nav>
     </aside>
 
+    <!-- MAIN CONTENT -->
     <div class="main-content">
         <header class="header">
             <div class="header-title" id="header-title">لوحة التحكم</div>
@@ -388,9 +446,11 @@
         </header>
 
         <main class="content">
+            <!-- DASHBOARD SECTION -->
             <div id="dashboard-section">
                 <div class="status-banner" id="statusBanner"></div>
 
+                <!-- TIME FILTER BUTTONS -->
                 <div class="time-filter-row" id="timeFilterRow">
                     <button class="time-btn active" data-tf="today" onclick="setTimeFilter('today')" id="tf-today">اليوم</button>
                     <button class="time-btn" data-tf="yesterday" onclick="setTimeFilter('yesterday')" id="tf-yesterday">أمس</button>
@@ -399,8 +459,10 @@
                     <button class="time-btn" data-tf="all" onclick="setTimeFilter('all')" id="tf-all">الكل</button>
                 </div>
 
+                <!-- KPI CARD (single, orange accent) -->
                 <div class="kpi-grid" id="kpiGrid"></div>
 
+                <!-- INDEPENDENT FILTERS SECTION — 3 columns, equal width on PC -->
                 <div class="dual-grid">
                     <div>
                         <label class="filter-label" id="label-classification">🎯 التصنيف</label>
@@ -432,6 +494,7 @@
                     </div>
                 </div>
 
+                <!-- INDEPENDENT CHARTS SECTION — directly under filters, 3 columns -->
                 <div class="charts-grid">
                     <div class="filter-chart-card">
                         <div class="chart-title" id="chart-title-class">توزيع التصنيف</div>
@@ -450,6 +513,7 @@
                     </div>
                 </div>
 
+                <!-- CLIENTS TABLE (search lives here, right above the table) -->
                 <div class="table-card">
                     <div class="table-header-row">
                         <div class="table-title" id="table-title-clients" style="margin-bottom:0;">📋 جدول العملاء</div>
@@ -473,6 +537,7 @@
                     </table>
                 </div>
 
+                <!-- MONTHLY COMPARISON — last section, no overlap -->
                 <div class="comparison-card">
                     <h3 class="comparison-title" id="comparison-title">📊 التقرير الشهري المفصل</h3>
                     <div class="comparison-scroll">
@@ -491,6 +556,7 @@
                 </div>
             </div>
 
+            <!-- ANALYTICS SECTION -->
             <div id="analytics-section" style="display:none; text-align:center; padding: 70px 20px; color:#94a3b8;">
                 <div style="font-size:60px; margin-bottom:20px;">📈</div>
                 <p style="font-size:20px; font-weight:800; color:#ffffff; margin-bottom:8px;" id="analytics-title">قسم التحليلات المتقدمة</p>
@@ -503,6 +569,7 @@
 <script>
 (function () {
     var SHEET_ID = '1cVFH6VPgXHrZ51LDdl1MzzUwXXC7XnORUQaY0T0pBUM';
+    // gviz endpoint is the most reliable for cross-origin fetch on public sheets
     var CSV_URL_PRIMARY = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:csv';
     var CSV_URL_SECONDARY = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/export?format=csv';
     var CORS_PROXY = 'https://corsproxy.io/?url=';
@@ -517,14 +584,23 @@
     var currentTimeFilter = 'today';
 
     var FIELD_MAP = {
-        name: ['name', 'nom', 'الاسم', 'اسم'],
-        phone: ['phone', 'telephone', 'téléphone', 'الهاتف', 'هاتف'],
-        budget: ['budget', 'budgets', 'h', 'الميزانية', 'ميزانية'],
-        type: ['type', 'property type', 'propriete', 'propriété', 'نوع العقار', 'النوع', 'g'],
-        status: ['status', 'statut', 'p', 'الحالة'],
-        classification: ['classification', 'm', 'التصنيف'],
-        date: ['date', 'd', 'التاريخ']
+        name: ['nom complet', 'nom', 'name', 'الاسم', 'اسم'],
+        phone: ['numero de telephone', 'telephone', 'phone', 'الهاتف', 'هاتف'],
+        budget: ['budget', 'الميزانية', 'ميزانية'],
+        type: ["type d'immobilier", 'type immobilier', 'type', 'property type', 'نوع العقار', 'النوع'],
+        status: ['status', 'statut', 'الحالة'],
+        classification: ['classification', 'التصنيف'],
+        date: ["date d'inscription", 'date inscription', 'date', 'التاريخ']
     };
+
+    function normalizeKey(s) {
+        return String(s)
+            .toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip accents (é -> e, etc.)
+            .replace(/['’]/g, ' ') // apostrophes -> space (d'immobilier -> d immobilier)
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
 
     var TXT = {
         ar: {
@@ -622,39 +698,57 @@
         b.textContent = '';
     }
 
+    // ---------- Flexible header mapping ----------
     function field(item, name) {
         var keys = FIELD_MAP[name] || [];
+
+        // 1) Try exact key match first (fast path for simple/English sheets)
         for (var i = 0; i < keys.length; i++) {
             var k = keys[i];
             if (item[k] !== undefined && item[k] !== '') return item[k];
         }
+
+        // 2) Fuzzy fallback: find any actual column header that CONTAINS one of our
+        //    keywords (handles multi-word French headers like "Nom Complet", "Numéro de Téléphone")
+        var itemKeys = Object.keys(item);
+        for (var j = 0; j < keys.length; j++) {
+            var kw = keys[j];
+            for (var m = 0; m < itemKeys.length; m++) {
+                if (itemKeys[m].indexOf(kw) !== -1 && item[itemKeys[m]] !== '') return item[itemKeys[m]];
+            }
+        }
         return '';
     }
 
+    // ---------- Robust date parsing (handles DD/MM/YYYY, MM/DD/YYYY, YYYY-MM-DD, etc.) ----------
     function parseFlexibleDate(raw) {
         if (!raw) return null;
         var s = String(raw).trim();
 
+        // ISO format: 2026-07-12
         var iso = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
         if (iso) {
             var d = new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
             if (!isNaN(d.getTime())) return d;
         }
 
+        // Slash or dash separated: DD/MM/YYYY or MM/DD/YYYY or D-M-YYYY
         var parts = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
         if (parts) {
             var a = Number(parts[1]);
             var b = Number(parts[2]);
             var y = Number(parts[3]);
             if (y < 100) y += 2000;
+            // If first part > 12, it must be a day (DD/MM/YYYY)
             var day, month;
             if (a > 12) { day = a; month = b; }
             else if (b > 12) { day = b; month = a; }
-            else { day = a; month = b; }
+            else { day = a; month = b; } // ambiguous, assume DD/MM/YYYY (common outside US)
             var d2 = new Date(y, month - 1, day);
             if (!isNaN(d2.getTime())) return d2;
         }
 
+        // Last resort: let the browser try
         var d3 = new Date(s);
         return isNaN(d3.getTime()) ? null : d3;
     }
@@ -666,6 +760,7 @@
         return Math.max.apply(null, nums);
     }
 
+    // ---------- CSV parsing (quote-aware, handles commas inside quoted fields) ----------
     function parseCSVLine(line) {
         var result = [];
         var cur = '';
@@ -693,7 +788,7 @@
     function parseCSV(text) {
         var rows = text.split(/\r?\n/).filter(function (r) { return r.trim().length > 0; });
         if (rows.length < 2) return [];
-        var headers = parseCSVLine(rows[0]).map(function (h) { return h.trim().toLowerCase().replace(/^"|"$/g, ''); });
+        var headers = parseCSVLine(rows[0]).map(function (h) { return normalizeKey(h.replace(/^"|"$/g, '')); });
         return rows.slice(1).map(function (row) {
             var values = parseCSVLine(row);
             var obj = {};
@@ -702,6 +797,7 @@
         }).filter(function (r) { return Object.values(r).some(function (v) { return v; }); });
     }
 
+    // ---------- Robust fetch with 3-tier fallback ----------
     function fetchData() {
         showBanner(t('loadingText'), 'loading');
 
@@ -744,6 +840,7 @@
             });
     }
 
+    // ---------- Time filter helper ----------
     function matchesTimeFilter(item) {
         if (currentTimeFilter === 'all') return true;
 
@@ -785,6 +882,16 @@
         updateDashboard();
     };
 
+    // ---------- Filters ----------
+    var CLASS_KEYWORDS = { VIP: ['vip'], WARM: ['warm'], COLD: ['cold'] };
+    var STATUS_KEYWORDS = { Nouveau: ['nouveau', 'new'], EnCours: ['cours', 'progress'], Vendu: ['vendu', 'sold'], Perdu: ['perdu', 'lost'] };
+    var PROPERTY_KEYWORDS = { Apartment: ['appart', 'apartment', 'شقة'], Villa: ['villa', 'فيلا'], Commercial: ['comercial', 'commercial', 'local', 'محل'] };
+
+    function matchesAny(value, keywords) {
+        var v = (value || '').toLowerCase();
+        return keywords.some(function (k) { return v.indexOf(k) !== -1; });
+    }
+
     function getFilteredData() {
         var classFilter = document.getElementById('classificationFilter').value;
         var statusFilter = document.getElementById('statusFilter').value;
@@ -799,9 +906,9 @@
             var phone = field(item, 'phone');
 
             var timeMatch = matchesTimeFilter(item);
-            var classMatch = classFilter === 'all' || cls.includes(classFilter);
-            var statusMatch = statusFilter === 'all' || stat.includes(statusFilter);
-            var propertyMatch = propertyFilter === 'all' || typ.includes(propertyFilter);
+            var classMatch = classFilter === 'all' || matchesAny(cls, CLASS_KEYWORDS[classFilter] || [classFilter.toLowerCase()]);
+            var statusMatch = statusFilter === 'all' || matchesAny(stat, STATUS_KEYWORDS[statusFilter] || [statusFilter.toLowerCase()]);
+            var propertyMatch = propertyFilter === 'all' || matchesAny(typ, PROPERTY_KEYWORDS[propertyFilter] || [propertyFilter.toLowerCase()]);
             var searchMatch = !searchTerm ||
                 name.toLowerCase().includes(searchTerm) ||
                 phone.includes(searchTerm);
@@ -810,6 +917,9 @@
         });
     }
 
+    // ---------- Rolling 30-day helpers ----------
+    // period 0  = last 30 days (today - 30 .. today)
+    // period 1  = the 30 days before that (today - 60 .. today - 30)
     function getRollingPeriodData(periodIndex) {
         var today = new Date();
         today.setHours(23, 59, 59, 999);
@@ -833,6 +943,7 @@
         return (((cur - prev) / prev) * 100).toFixed(1);
     }
 
+    // ---------- KPIs ----------
     function renderKpis() {
         var filtered = getFilteredData();
         var total = filtered.length;
@@ -842,41 +953,45 @@
             '<div class="kpi-icon" style="background:' + NEON.orange + '22; color:' + NEON.orange + ';">👥</div></div></div>';
     }
 
+    // ---------- Chart data ----------
     function getClassificationData() {
         var filtered = getFilteredData();
         return [
-            { name: 'VIP 🔥', value: filtered.filter(function (d) { return field(d, 'classification').includes('VIP'); }).length, color: NEON.red },
-            { name: 'WARM 🪵', value: filtered.filter(function (d) { return field(d, 'classification').includes('WARM'); }).length, color: NEON.orange },
-            { name: 'COLD ❄️', value: filtered.filter(function (d) { return field(d, 'classification').includes('COLD'); }).length, color: NEON.cyan }
+            { name: 'VIP 🔥', value: filtered.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.VIP); }).length, color: NEON.red },
+            { name: 'WARM 🪵', value: filtered.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.WARM); }).length, color: NEON.orange },
+            { name: 'COLD ❄️', value: filtered.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.COLD); }).length, color: NEON.cyan }
         ];
     }
     function getStatusData() {
         var filtered = getFilteredData();
         return [
-            { name: 'Nouveau 🆕', value: filtered.filter(function (d) { return field(d, 'status').includes('Nouveau'); }).length, color: NEON.blue },
-            { name: 'En cours ⏳', value: filtered.filter(function (d) { return field(d, 'status').includes('cours'); }).length, color: NEON.yellow },
-            { name: 'Vendu ✅', value: filtered.filter(function (d) { return field(d, 'status').includes('Vendu'); }).length, color: NEON.green },
-            { name: 'Perdu ❌', value: filtered.filter(function (d) { return field(d, 'status').includes('Perdu'); }).length, color: NEON.red }
+            { name: 'Nouveau 🆕', value: filtered.filter(function (d) { return matchesAny(field(d, 'status'), STATUS_KEYWORDS.Nouveau); }).length, color: NEON.blue },
+            { name: 'En cours ⏳', value: filtered.filter(function (d) { return matchesAny(field(d, 'status'), STATUS_KEYWORDS.EnCours); }).length, color: NEON.yellow },
+            { name: 'Vendu ✅', value: filtered.filter(function (d) { return matchesAny(field(d, 'status'), STATUS_KEYWORDS.Vendu); }).length, color: NEON.green },
+            { name: 'Perdu ❌', value: filtered.filter(function (d) { return matchesAny(field(d, 'status'), STATUS_KEYWORDS.Perdu); }).length, color: NEON.red }
         ];
     }
     function getPropertyData() {
         var filtered = getFilteredData();
         return [
-            { name: 'شقة 🏢', value: filtered.filter(function (d) { return field(d, 'type').includes('Apartment'); }).length, color: NEON.blue },
-            { name: 'فيلا 🏰', value: filtered.filter(function (d) { return field(d, 'type').includes('Villa'); }).length, color: NEON.purple },
-            { name: 'محل تجاري 🏪', value: filtered.filter(function (d) { return field(d, 'type').includes('Commercial'); }).length, color: NEON.pink }
+            { name: 'شقة 🏢', value: filtered.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Apartment); }).length, color: NEON.blue },
+            { name: 'فيلا 🏰', value: filtered.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Villa); }).length, color: NEON.purple },
+            { name: 'محل تجاري 🏪', value: filtered.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Commercial); }).length, color: NEON.pink }
         ];
     }
 
     function totalOf(dataset) { return dataset.reduce(function (s, d) { return s + d.value; }, 0) || 1; }
 
+    // ---------- Self-contained SVG donut chart (no external library, always renders) ----------
+    // Each segment is sized strictly proportional to its share of the total, with a small gap
+    // between segments so the divisions are visually unmistakable, and colors are preserved per category.
     function buildDonutSVG(dataset, totalLabel) {
         var visible = dataset.filter(function (d) { return d.value > 0; });
         var total = dataset.reduce(function (s, d) { return s + d.value; }, 0);
         var size = 100;
-        var cx = size / 2, cy = size / 2, r = 40, strokeW = 18;
+        var cx = size / 2, cy = size / 2, r = 38, strokeW = 22;
         var circumference = 2 * Math.PI * r;
-        var gapDeg = visible.length > 1 ? 3 : 0;
+        var gapDeg = visible.length > 1 ? 4 : 0; // visual gap (in degrees) between segments
         var gapLen = (gapDeg / 360) * circumference;
 
         if (total === 0) {
@@ -889,7 +1004,7 @@
         var segments = visible.map(function (d) {
             var frac = d.value / total;
             var rawDash = frac * circumference;
-            var dash = Math.max(rawDash - gapLen, 1);
+            var dash = Math.max(rawDash - gapLen, 1); // subtract gap, keep a visible minimum sliver
             var seg = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + d.color + '" stroke-width="' + strokeW + '" ' +
                 'stroke-dasharray="' + dash.toFixed(2) + ' ' + (circumference - dash).toFixed(2) + '" ' +
                 'stroke-dashoffset="-' + offset.toFixed(2) + '" stroke-linecap="round"></circle>';
@@ -897,10 +1012,10 @@
             return seg;
         }).join('');
 
+        // Clean ring style (matches reference): no background track, no center text — just the colored segments
         return '<div class="donut-wrap"><svg viewBox="0 0 ' + size + ' ' + size + '">' +
-            '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="#1e293b" stroke-width="' + strokeW + '"></circle>' +
             segments +
-            '</svg><div class="donut-center"><div class="donut-total">' + total + '</div><div class="donut-caption">' + totalLabel + '</div></div></div>';
+            '</svg></div>';
     }
 
     function renderCharts() {
@@ -930,6 +1045,7 @@
         document.getElementById('propertyLegend').innerHTML = build(propertyData);
     }
 
+    // ---------- Clients table ----------
     function renderLeadsTable() {
         var filtered = getFilteredData();
         var tbody = document.getElementById('leadsTableBody');
@@ -942,8 +1058,8 @@
         tbody.innerHTML = filtered.slice(0, 15).map(function (item) {
             var cls = field(item, 'classification');
             var badgeClass = 'badge ';
-            if (cls.includes('VIP')) badgeClass += 'badge-vip';
-            else if (cls.includes('WARM')) badgeClass += 'badge-warm';
+            if (matchesAny(cls, CLASS_KEYWORDS.VIP)) badgeClass += 'badge-vip';
+            else if (matchesAny(cls, CLASS_KEYWORDS.WARM)) badgeClass += 'badge-warm';
             else badgeClass += 'badge-cold';
 
             return '<tr>' +
@@ -957,18 +1073,19 @@
         }).join('');
     }
 
+    // ---------- Monthly comparison (cleaned) ----------
     function renderComparisonTable() {
         var cur = getRollingPeriodData(0);
         var prev = getRollingPeriodData(1);
 
         var rows = [
             { label: t('mTotal'), current: cur.length, previous: prev.length },
-            { label: t('mApt'), current: cur.filter(function (d) { return field(d, 'type').includes('Apartment'); }).length, previous: prev.filter(function (d) { return field(d, 'type').includes('Apartment'); }).length },
-            { label: t('mVilla'), current: cur.filter(function (d) { return field(d, 'type').includes('Villa'); }).length, previous: prev.filter(function (d) { return field(d, 'type').includes('Villa'); }).length },
-            { label: t('mShop'), current: cur.filter(function (d) { return field(d, 'type').includes('Commercial'); }).length, previous: prev.filter(function (d) { return field(d, 'type').includes('Commercial'); }).length },
-            { label: t('mVip'), current: cur.filter(function (d) { return field(d, 'classification').includes('VIP'); }).length, previous: prev.filter(function (d) { return field(d, 'classification').includes('VIP'); }).length },
-            { label: t('mWarm'), current: cur.filter(function (d) { return field(d, 'classification').includes('WARM'); }).length, previous: prev.filter(function (d) { return field(d, 'classification').includes('WARM'); }).length },
-            { label: t('mCold'), current: cur.filter(function (d) { return field(d, 'classification').includes('COLD'); }).length, previous: prev.filter(function (d) { return field(d, 'classification').includes('COLD'); }).length }
+            { label: t('mApt'), current: cur.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Apartment); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Apartment); }).length },
+            { label: t('mVilla'), current: cur.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Villa); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Villa); }).length },
+            { label: t('mShop'), current: cur.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Commercial); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Commercial); }).length },
+            { label: t('mVip'), current: cur.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.VIP); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.VIP); }).length },
+            { label: t('mWarm'), current: cur.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.WARM); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.WARM); }).length },
+            { label: t('mCold'), current: cur.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.COLD); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.COLD); }).length }
         ];
 
         document.getElementById('comparisonTableBody').innerHTML = rows.map(function (row) {
@@ -983,6 +1100,7 @@
         }).join('');
     }
 
+    // ---------- Master update ----------
     window.updateDashboard = function () {
         try {
             renderKpis();
@@ -995,12 +1113,13 @@
         }
     };
 
+    // ---------- Global safety net: never let an uncaught error leave a blank page ----------
     window.onerror = function (message, source, lineno, colno, error) {
         console.error('UNCAUGHT ERROR:', message, 'at', source + ':' + lineno);
         try {
             showBanner((currentLanguage === 'ar' ? '⚠️ خطأ غير متوقع: ' : '⚠️ Unexpected error: ') + message, 'error');
-        } catch (e) { /* no-op */ }
-        return true;
+        } catch (e) { /* no-op, banner itself may not exist yet */ }
+        return true; // prevent default browser error overlay from blocking rendering
     };
 
     document.addEventListener('DOMContentLoaded', function () {
