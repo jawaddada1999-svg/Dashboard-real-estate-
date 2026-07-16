@@ -21,7 +21,12 @@
     ::-webkit-scrollbar-thumb { background: #00d2ff; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
 
-    .app-shell { display: flex; width: 100%; min-height: 100vh; }
+    /* ============ LAYOUT — FULL WIDTH FIX (RTL SAFE) ============ */
+    .app-shell {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+    }
 
     .sidebar {
         width: 260px;
@@ -38,19 +43,24 @@
     }
 
     .sidebar-header {
-        display: flex; align-items: center; gap: 12px;
-        margin-bottom: 36px; padding-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 36px;
+        padding-bottom: 20px;
         border-bottom: 1px solid #1e293b;
     }
 
     .sidebar-logo {
-        width: 44px; height: 44px; border-radius: 12px;
+        width: 44px; height: 44px;
+        border-radius: 12px;
         background: linear-gradient(135deg, #00d2ff, #9b51e0);
         display: flex; align-items: center; justify-content: center;
         font-size: 22px; font-weight: 800; color: #020617;
     }
 
     .sidebar-title { font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 800; color: #ffffff; }
+
     .sidebar-menu { display: flex; flex-direction: column; gap: 12px; }
 
     .menu-btn {
@@ -60,15 +70,23 @@
         padding: 14px 16px;
         border-radius: 12px;
         cursor: pointer;
-        font-size: 14px; font-weight: 700;
+        font-size: 14px;
+        font-weight: 700;
         transition: all .25s ease;
         display: flex; align-items: center; gap: 12px;
-        text-align: start; width: 100%;
+        text-align: start;
+        width: 100%;
     }
 
     .menu-btn:hover { background: rgba(0,210,255,0.08); border-color: rgba(0,210,255,0.3); color: #00d2ff; }
-    .menu-btn.active { background: rgba(0,210,255,0.15); border-color: rgba(0,210,255,0.5); color: #5eead4; }
 
+    .menu-btn.active {
+        background: rgba(0,210,255,0.15);
+        border-color: rgba(0,210,255,0.5);
+        color: #5eead4;
+    }
+
+    /* Main content takes 100% of remaining space — the RTL shrink fix */
     .main-content {
         flex: 1 1 0%;
         width: 100%;
@@ -80,19 +98,1145 @@
     }
 
     .header {
-        position: sticky; top: 0; z-index: 100;
+        position: sticky;
+        top: 0;
+        z-index: 100;
         background: rgba(2, 6, 23, 0.9);
         backdrop-filter: blur(14px);
         border-bottom: 1px solid #1e293b;
         padding: 24px 32px;
-        display: flex; justify-content: space-between; align-items: center;
-        gap: 20px; flex-wrap: wrap;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
     }
 
     .header-title { font-family: 'Poppins', sans-serif; font-size: 30px; font-weight: 800; color: #ffffff; }
+
     .header-controls { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
     .search-wrap { position: relative; }
 
     .search-input {
         background: rgba(255,255,255,0.04);
-        border: 1px
+        border: 1px solid #1e293b;
+        padding: 11px 16px 11px 40px;
+        border-radius: 10px;
+        color: #f1f5f9;
+        width: 260px;
+        font-size: 14px;
+        transition: all .25s ease;
+    }
+    html[dir="rtl"] .search-input { padding: 11px 40px 11px 16px; }
+
+    .search-icon {
+        position: absolute;
+        top: 50%; transform: translateY(-50%);
+        inset-inline-start: 14px;
+        color: #64748b;
+        font-size: 14px;
+        pointer-events: none;
+    }
+
+    .search-input:focus { outline: none; border-color: #00d2ff; box-shadow: 0 0 0 3px rgba(0,210,255,0.15); }
+    .search-input::placeholder { color: #64748b; }
+
+    .language-selector {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid #1e293b;
+        color: #f1f5f9;
+        padding: 10px 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 13px; font-weight: 700;
+        transition: all .25s ease;
+    }
+    .language-selector:hover { border-color: #00d2ff; }
+    .language-selector option { background: #0f172a; color: #f1f5f9; }
+
+    .live-indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(39, 174, 96, 0.1);
+        border: 1px solid rgba(39, 174, 96, 0.35);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #6ee7b7;
+    }
+    .live-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: #27ae60;
+        box-shadow: 0 0 0 0 rgba(39,174,96,0.6);
+        animation: livePulse 1.8s infinite;
+        flex-shrink: 0;
+    }
+    @keyframes livePulse {
+        0% { box-shadow: 0 0 0 0 rgba(39,174,96,0.55); }
+        70% { box-shadow: 0 0 0 7px rgba(39,174,96,0); }
+        100% { box-shadow: 0 0 0 0 rgba(39,174,96,0); }
+    }
+    .live-time { color: #94a3b8; font-weight: 600; }
+
+    .refresh-btn {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid #1e293b;
+        color: #f1f5f9;
+        width: 38px; height: 38px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all .25s ease;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .refresh-btn:hover { border-color: #00d2ff; color: #00d2ff; transform: rotate(90deg); }
+    .refresh-btn.spinning { animation: spin 0.8s linear; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .content {
+        flex: 1;
+        width: 100%;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        overflow-y: auto;
+    }
+
+    /* ============ STATUS BANNER ============ */
+    .status-banner { display: none; padding: 16px 20px; border-radius: 12px; font-size: 14px; font-weight: 700; }
+    .status-banner.loading { display: block; background: rgba(0,210,255,0.08); border: 1px solid rgba(0,210,255,0.35); color: #7dd3fc; }
+    .status-banner.error { display: block; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.4); color: #fca5a5; }
+
+    /* ============ TIME FILTER BUTTONS ============ */
+    .time-filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        width: 100%;
+    }
+    .time-btn {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid #1e293b;
+        color: #cbd5e1;
+        padding: 10px 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 700;
+        transition: all .2s ease;
+    }
+    .time-btn:hover { border-color: rgba(242,153,74,0.4); color: #fdba74; }
+    .time-btn.active {
+        background: rgba(242,153,74,0.18);
+        border-color: rgba(242,153,74,0.6);
+        color: #fdba74;
+        box-shadow: 0 0 0 1px rgba(242,153,74,0.25);
+    }
+
+    /* ============ KPI CARD — single, orange accent ============ */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+        width: 100%;
+    }
+
+    .kpi-card {
+        background: rgba(30, 41, 59, 0.45);
+        border: 1px solid #1e293b;
+        border-radius: 18px;
+        padding: 26px;
+        backdrop-filter: blur(12px);
+        transition: all .25s ease;
+    }
+    .kpi-card:hover { border-color: rgba(0,210,255,0.35); transform: translateY(-3px); }
+
+    .kpi-card.kpi-orange {
+        background: linear-gradient(135deg, rgba(242,153,74,0.30), rgba(242,153,74,0.08) 60%, rgba(30,41,59,0.6));
+        border: 2px solid #f2994a;
+        box-shadow: 0 0 0 1px rgba(242,153,74,0.25), 0 0 32px rgba(242,153,74,0.28), 0 10px 30px rgba(242,153,74,0.15);
+        position: relative;
+        overflow: hidden;
+    }
+    .kpi-card.kpi-orange::before {
+        content: '';
+        position: absolute;
+        top: 0; bottom: 0;
+        inset-inline-start: 0;
+        width: 6px;
+        background: linear-gradient(180deg, #f2994a, #fdba74);
+    }
+    .kpi-card.kpi-orange:hover { border-color: #fdba74; box-shadow: 0 0 0 1px rgba(242,153,74,0.35), 0 0 40px rgba(242,153,74,0.4); }
+    .kpi-card.kpi-orange .kpi-label { color: #fdba74; }
+    .kpi-card.kpi-orange .kpi-icon { background: #f2994a !important; color: #1a0f00 !important; box-shadow: 0 0 20px rgba(242,153,74,0.6); }
+
+    .kpi-content { display: flex; justify-content: space-between; align-items: flex-start; }
+    .kpi-label { font-size: 12px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 10px; }
+    .kpi-value { font-family: 'Poppins', sans-serif; font-size: 36px; font-weight: 800; color: #ffffff; line-height: 1; }
+    .kpi-icon {
+        width: 48px; height: 48px; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+
+    .dual-grid, .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+        width: 100%;
+    }
+    .dual-grid { margin-bottom: 24px; gap: 16px; }
+    @media (max-width: 900px) {
+        .dual-grid, .charts-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============ FILTERS + CHARTS card ============ */
+    .filter-chart-card {
+        background: rgba(30, 41, 59, 0.45);
+        border: 1px solid #1e293b;
+        border-radius: 18px;
+        padding: 24px;
+        backdrop-filter: blur(12px);
+        min-width: 0;
+    }
+
+    .filter-label {
+        display: block;
+        font-size: 13px; font-weight: 800; color: #ffffff;
+        text-transform: uppercase; letter-spacing: .5px;
+        margin-bottom: 12px;
+    }
+
+    .filter-select {
+        width: 100%;
+        background: rgba(2,6,23,0.6);
+        border: 1px solid #1e293b;
+        padding: 12px 14px;
+        border-radius: 10px;
+        color: #f1f5f9;
+        font-size: 14px; font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+    .filter-select:focus { outline: none; border-color: #00d2ff; }
+    .filter-select option { background: #0f172a; color: #f1f5f9; }
+
+    .chart-title { font-size: 14px; font-weight: 800; color: #ffffff; margin-bottom: 12px; }
+
+    .chart-box {
+        background: rgba(2,6,23,0.4);
+        border: 1px solid #1e293b;
+        border-radius: 12px;
+        padding: 14px;
+        height: 260px;
+        width: 100%;
+        position: relative;
+        margin-bottom: 16px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .donut-wrap { position: relative; width: 210px; height: 210px; }
+    .donut-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .donut-center {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        pointer-events: none;
+    }
+    .donut-center .donut-total { font-family: 'Poppins', sans-serif; font-size: 30px; font-weight: 800; color: #ffffff; line-height: 1; }
+    .donut-center .donut-caption { font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
+    .donut-empty { color: #64748b; font-weight: 700; font-size: 13px; }
+
+    .legend-list { display: flex; flex-direction: column; gap: 8px; }
+    .legend-row {
+        display: flex; align-items: center; justify-content: space-between;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid #1e293b;
+        padding: 9px 12px;
+        border-radius: 8px;
+        font-size: 13px;
+    }
+    .legend-left { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .legend-dot { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
+    .legend-name { color: #cbd5e1; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .legend-num { color: #ffffff; font-weight: 800; flex-shrink: 0; }
+
+    /* ============ CLIENTS TABLE ============ */
+    .table-card {
+        background: rgba(30, 41, 59, 0.45);
+        border: 1px solid #1e293b;
+        border-radius: 18px;
+        padding: 26px;
+        backdrop-filter: blur(12px);
+        overflow-x: auto;
+        width: 100%;
+    }
+    .table-title { font-size: 20px; font-weight: 800; color: #ffffff; margin-bottom: 20px; }
+    .table-header-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    table { width: 100%; border-collapse: collapse; min-width: 700px; }
+    table thead { border-bottom: 1px solid #1e293b; }
+    table th {
+        text-align: start; padding: 13px 14px;
+        color: #00d2ff; font-size: 12px; font-weight: 800;
+        text-transform: uppercase; letter-spacing: .4px;
+    }
+    table td { padding: 13px 14px; border-bottom: 1px solid rgba(30,41,59,0.7); color: #e2e8f0; font-size: 13px; }
+    table tbody tr:hover { background: rgba(0,210,255,0.06); }
+
+    .badge {
+        display: inline-block; padding: 5px 12px; border-radius: 8px;
+        font-size: 11px; font-weight: 700; border: 1px solid;
+    }
+    .badge-status { background: rgba(0,210,255,0.12); color: #67e8f9; border-color: rgba(0,210,255,0.3); }
+    .badge-vip { background: rgba(239,68,68,0.15); color: #fca5a5; border-color: rgba(239,68,68,0.35); }
+    .badge-warm { background: rgba(242,153,74,0.15); color: #fdba74; border-color: rgba(242,153,74,0.35); }
+    .badge-cold { background: rgba(6,182,212,0.15); color: #67e8f9; border-color: rgba(6,182,212,0.35); }
+    .empty-row td { text-align: center; padding: 30px; color: #64748b; font-weight: 700; }
+
+    /* ============ MONTHLY COMPARISON (last section) ============ */
+    .comparison-card {
+        background: linear-gradient(135deg, rgba(0,210,255,0.06), rgba(155,81,224,0.05));
+        border: 1px solid rgba(0,210,255,0.2);
+        border-radius: 18px;
+        padding: 32px;
+        width: 100%;
+    }
+    .comparison-title { font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 800; color: #ffffff; margin-bottom: 26px; }
+    .comparison-scroll { overflow-x: auto; width: 100%; }
+    .comparison-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    .comparison-table thead { border-bottom: 2px solid rgba(0,210,255,0.3); }
+    .comparison-table th {
+        padding: 15px; text-align: center; color: #00d2ff;
+        font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px;
+    }
+    .comparison-table th:first-child { text-align: start; }
+    .comparison-table td { padding: 15px; border-bottom: 1px solid rgba(30,41,59,0.7); text-align: center; font-size: 14px; }
+    .comparison-table td:first-child { text-align: start; font-weight: 700; color: #f1f5f9; }
+    .comparison-table tbody tr:hover { background: rgba(0,210,255,0.06); }
+    .val-prev, .val-cur { font-family: 'Poppins', sans-serif; font-weight: 800; color: #93c5fd; }
+    .val-cur { color: #ffffff; }
+    .growth-cell { display: flex; align-items: center; justify-content: center; gap: 7px; font-weight: 800; }
+    .growth-up { color: #27ae60; }
+    .growth-down { color: #ef4444; }
+    .growth-flat { color: #94a3b8; }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 900px) {
+        .app-shell { flex-direction: column; }
+        .sidebar {
+            position: relative; width: 100%; height: auto;
+            border-inline-end: none; border-bottom: 1px solid #1e293b;
+        }
+        .main-content { margin-inline-start: 0; }
+        .sidebar-menu { flex-direction: row; flex-wrap: wrap; }
+        .menu-btn { flex: 1; min-width: 140px; }
+        .kpi-grid { grid-template-columns: 1fr; }
+        .header { flex-direction: column; align-items: flex-start; }
+        .search-input { width: 100%; }
+        .header-controls { width: 100%; flex-direction: column; align-items: stretch; }
+    }
+
+    @media (max-width: 600px) {
+        .content { padding: 18px; gap: 18px; }
+        .header { padding: 18px; }
+        .header-title { font-size: 22px; }
+        .comparison-card { padding: 18px; }
+        .comparison-title { font-size: 18px; }
+    }
+</style>
+</head>
+<body>
+<div class="app-shell">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">📊</div>
+            <div class="sidebar-title">Dashboard</div>
+        </div>
+        <nav class="sidebar-menu">
+            <button class="menu-btn active" id="btn-dashboard" onclick="switchSection('dashboard')">📊 <span id="menu-dashboard">لوحة التحكم</span></button>
+            <button class="menu-btn" id="btn-analytics" onclick="switchSection('analytics')">📈 <span id="menu-analytics">التحليلات المتقدمة</span></button>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <header class="header">
+            <div class="header-title" id="header-title">لوحة التحكم</div>
+            <div class="header-controls">
+                <div class="live-indicator" id="liveIndicator">
+                    <span class="live-dot"></span>
+                    <span id="liveText">مباشر</span>
+                    <span class="live-time" id="lastUpdatedTime"></span>
+                </div>
+                <button class="refresh-btn" id="refreshBtn" onclick="manualRefresh()" title="تحديث الآن">🔄</button>
+                <select class="language-selector" id="languageSelect" onchange="changeLanguage(this.value)">
+                    <option value="ar">العربية</option>
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
+                </select>
+            </div>
+        </header>
+
+        <main class="content">
+            <!-- DASHBOARD SECTION -->
+            <div id="dashboard-section">
+                <div class="status-banner" id="statusBanner"></div>
+
+                <!-- TIME FILTER BUTTONS -->
+                <div class="time-filter-row" id="timeFilterRow">
+                    <button class="time-btn active" data-tf="today" onclick="setTimeFilter('today')" id="tf-today">اليوم</button>
+                    <button class="time-btn" data-tf="yesterday" onclick="setTimeFilter('yesterday')" id="tf-yesterday">أمس</button>
+                    <button class="time-btn" data-tf="lastWeek" onclick="setTimeFilter('lastWeek')" id="tf-week">الأسبوع الماضي</button>
+                    <button class="time-btn" data-tf="lastMonth" onclick="setTimeFilter('lastMonth')" id="tf-month">الشهر الماضي</button>
+                    <button class="time-btn" data-tf="all" onclick="setTimeFilter('all')" id="tf-all">الكل</button>
+                </div>
+
+                <!-- KPI CARD (single, orange accent) -->
+                <div class="kpi-grid" id="kpiGrid"></div>
+
+                <!-- INDEPENDENT FILTERS SECTION — 3 columns, equal width on PC -->
+                <div class="dual-grid">
+                    <div>
+                        <label class="filter-label" id="label-classification">🎯 التصنيف</label>
+                        <select class="filter-select" id="classificationFilter" onchange="updateDashboard()">
+                            <option value="all" id="opt-class-all">الكل</option>
+                            <option value="VIP">VIP 🔥</option>
+                            <option value="WARM">WARM 🪵</option>
+                            <option value="COLD">COLD ❄️</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="filter-label" id="label-status">⏳ الحالة</label>
+                        <select class="filter-select" id="statusFilter" onchange="updateDashboard()">
+                            <option value="all" id="opt-status-all">الكل</option>
+                            <option value="Nouveau">Nouveau 🆕</option>
+                            <option value="EnCours">En cours ⏳</option>
+                            <option value="Vendu">Vendu ✅</option>
+                            <option value="Perdu">Perdu ❌</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="filter-label" id="label-property">🏠 نوع العقار</label>
+                        <select class="filter-select" id="propertyFilter" onchange="updateDashboard()">
+                            <option value="all" id="opt-prop-all">الكل</option>
+                            <option value="Apartment">شقة 🏢</option>
+                            <option value="Villa">فيلا 🏰</option>
+                            <option value="Commercial">محل تجاري 🏪</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- INDEPENDENT CHARTS SECTION — directly under filters, 3 columns -->
+                <div class="charts-grid">
+                    <div class="filter-chart-card">
+                        <div class="chart-title" id="chart-title-class">توزيع التصنيف</div>
+                        <div class="chart-box" id="classificationChart"></div>
+                        <div class="legend-list" id="classificationLegend"></div>
+                    </div>
+                    <div class="filter-chart-card">
+                        <div class="chart-title" id="chart-title-status">توزيع الحالة</div>
+                        <div class="chart-box" id="statusChart"></div>
+                        <div class="legend-list" id="statusLegend"></div>
+                    </div>
+                    <div class="filter-chart-card">
+                        <div class="chart-title" id="chart-title-property">توزيع نوع العقار</div>
+                        <div class="chart-box" id="propertyChart"></div>
+                        <div class="legend-list" id="propertyLegend"></div>
+                    </div>
+                </div>
+
+                <!-- CLIENTS TABLE (search lives here, right above the table) -->
+                <div class="table-card">
+                    <div class="table-header-row">
+                        <div class="table-title" id="table-title-clients" style="margin-bottom:0;">📋 جدول العملاء</div>
+                        <div class="search-wrap">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن عميل..." oninput="updateDashboard()">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th id="th-name">الاسم</th>
+                                <th id="th-phone">الهاتف</th>
+                                <th id="th-budget">الميزانية</th>
+                                <th id="th-type">النوع</th>
+                                <th id="th-status">الحالة</th>
+                                <th id="th-classification">التصنيف</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leadsTableBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- MONTHLY COMPARISON — last section, no overlap -->
+                <div class="comparison-card">
+                    <h3 class="comparison-title" id="comparison-title">📊 التقرير الشهري المفصل</h3>
+                    <div class="comparison-scroll">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th id="comp-th-metric">المؤشر / الفئة</th>
+                                    <th id="comp-th-previous">آخر 30 يوم (السابقة)</th>
+                                    <th id="comp-th-current">آخر 30 يوم (الحالية)</th>
+                                    <th id="comp-th-growth">نسبة التطور %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="comparisonTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANALYTICS SECTION -->
+            <div id="analytics-section" style="display:none; text-align:center; padding: 70px 20px; color:#94a3b8;">
+                <div style="font-size:60px; margin-bottom:20px;">📈</div>
+                <p style="font-size:20px; font-weight:800; color:#ffffff; margin-bottom:8px;" id="analytics-title">قسم التحليلات المتقدمة</p>
+                <p id="analytics-sub">سيتم إضافة المزيد من التقارير والرسوم البيانية قريباً</p>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+(function () {
+    var SHEET_ID = '1cVFH6VPgXHrZ51LDdl1MzzUwXXC7XnORUQaY0T0pBUM';
+    // gviz endpoint is the most reliable for cross-origin fetch on public sheets
+    var CSV_URL_PRIMARY = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:csv';
+    var CSV_URL_SECONDARY = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/export?format=csv';
+    var CORS_PROXY = 'https://corsproxy.io/?url=';
+
+    var NEON = {
+        blue: '#00d2ff', purple: '#9b51e0', green: '#27ae60', orange: '#f2994a',
+        pink: '#ec4899', cyan: '#06b6d4', red: '#ef4444', yellow: '#f5b942'
+    };
+
+    var rawData = [];
+    var currentLanguage = 'ar';
+    var currentTimeFilter = 'today';
+
+    var FIELD_MAP = {
+        name: ['nom complet', 'nom', 'name', 'الاسم', 'اسم'],
+        phone: ['numero de telephone', 'telephone', 'phone', 'الهاتف', 'هاتف'],
+        budget: ['budget', 'الميزانية', 'ميزانية'],
+        type: ["type d'immobilier", 'type immobilier', 'type', 'property type', 'نوع العقار', 'النوع'],
+        status: ['status', 'statut', 'الحالة'],
+        classification: ['classification', 'التصنيف'],
+        date: ["date d'inscription", 'date inscription', 'date', 'التاريخ']
+    };
+
+    function normalizeKey(s) {
+        return String(s)
+            .toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip accents (é -> e, etc.)
+            .replace(/['’]/g, ' ') // apostrophes -> space (d'immobilier -> d immobilier)
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    var TXT = {
+        ar: {
+            'header-title': 'لوحة التحكم', 'menu-dashboard': 'لوحة التحكم', 'menu-analytics': 'التحليلات المتقدمة',
+            'label-classification': '🎯 التصنيف', 'label-status': '⏳ الحالة', 'label-property': '🏠 نوع العقار',
+            'chart-title-class': 'توزيع التصنيف', 'chart-title-status': 'توزيع الحالة', 'chart-title-property': 'توزيع نوع العقار',
+            'table-title-clients': '📋 جدول العملاء', 'th-name': 'الاسم', 'th-phone': 'الهاتف', 'th-budget': 'الميزانية',
+            'th-type': 'النوع', 'th-status': 'الحالة', 'th-classification': 'التصنيف',
+            'comparison-title': '📊 التقرير الشهري المفصل', 'comp-th-metric': 'المؤشر / الفئة',
+            'comp-th-previous': 'آخر 30 يوم (السابقة)', 'comp-th-current': 'آخر 30 يوم (الحالية)', 'comp-th-growth': 'نسبة التطور %',
+            'opt-class-all': 'الكل', 'opt-status-all': 'الكل', 'opt-prop-all': 'الكل',
+            'analytics-title': 'قسم التحليلات المتقدمة', 'analytics-sub': 'سيتم إضافة المزيد من التقارير والرسوم البيانية قريباً',
+            kpiTotal: '👥 مجموع العملاء',
+            loadingText: '⏳ جاري تحميل البيانات...', errorText: '❌ تعذر تحميل البيانات من الشيت. تأكد من أن الرابط منشور بشكل صحيح.',
+            noData: 'لا توجد بيانات مطابقة', searchPh: 'ابحث عن عميل...',
+            mTotal: '👥 مجموع العملاء', mApt: '🏢 الشقق', mVilla: '🏰 الفيلات', mShop: '🏪 المحلات التجارية',
+            mVip: '🔥 عملاء VIP', mWarm: '🪵 عملاء WARM', mCold: '❄️ عملاء COLD',
+            tfToday: 'اليوم', tfYesterday: 'أمس', tfWeek: 'الأسبوع الماضي', tfMonth: 'الشهر الماضي', tfAll: 'الكل',
+            liveText: 'مباشر', updatedJustNow: 'تحدّث الآن', updatedAgo: 'تحدّث منذ'
+        },
+        en: {
+            'header-title': 'Dashboard', 'menu-dashboard': 'Dashboard', 'menu-analytics': 'Advanced Analytics',
+            'label-classification': '🎯 Classification', 'label-status': '⏳ Status', 'label-property': '🏠 Property Type',
+            'chart-title-class': 'Classification Distribution', 'chart-title-status': 'Status Distribution', 'chart-title-property': 'Property Type Distribution',
+            'table-title-clients': '📋 Clients Table', 'th-name': 'Name', 'th-phone': 'Phone', 'th-budget': 'Budget',
+            'th-type': 'Type', 'th-status': 'Status', 'th-classification': 'Classification',
+            'comparison-title': '📊 Monthly Comparison Report', 'comp-th-metric': 'Metric',
+            'comp-th-previous': 'Last 30 Days (Prior)', 'comp-th-current': 'Last 30 Days (Current)', 'comp-th-growth': 'Growth %',
+            'opt-class-all': 'All', 'opt-status-all': 'All', 'opt-prop-all': 'All',
+            'analytics-title': 'Advanced Analytics Section', 'analytics-sub': 'More reports and charts coming soon',
+            kpiTotal: '👥 Total Clients',
+            loadingText: '⏳ Loading data...', errorText: '❌ Could not load data from the sheet. Check the publish link.',
+            noData: 'No matching data', searchPh: 'Search client...',
+            mTotal: '👥 Total Clients', mApt: '🏢 Apartments', mVilla: '🏰 Villas', mShop: '🏪 Commercial Shops',
+            mVip: '🔥 VIP Clients', mWarm: '🪵 WARM Clients', mCold: '❄️ COLD Clients',
+            tfToday: 'Today', tfYesterday: 'Yesterday', tfWeek: 'Last Week', tfMonth: 'Last Month', tfAll: 'All',
+            liveText: 'Live', updatedJustNow: 'Updated just now', updatedAgo: 'Updated'
+        },
+        fr: {
+            'header-title': 'Tableau de Bord', 'menu-dashboard': 'Tableau de Bord', 'menu-analytics': 'Analytiques Avancées',
+            'label-classification': '🎯 Classification', 'label-status': '⏳ Statut', 'label-property': '🏠 Type de Propriété',
+            'chart-title-class': 'Répartition par Classification', 'chart-title-status': 'Répartition par Statut', 'chart-title-property': 'Répartition par Type',
+            'table-title-clients': '📋 Tableau des Clients', 'th-name': 'Nom', 'th-phone': 'Téléphone', 'th-budget': 'Budget',
+            'th-type': 'Type', 'th-status': 'Statut', 'th-classification': 'Classification',
+            'comparison-title': '📊 Rapport Mensuel Détaillé', 'comp-th-metric': 'Métrique / Catégorie',
+            'comp-th-previous': '30 derniers jours (précédents)', 'comp-th-current': '30 derniers jours (actuels)', 'comp-th-growth': 'Croissance %',
+            'opt-class-all': 'Tous', 'opt-status-all': 'Tous', 'opt-prop-all': 'Tous',
+            'analytics-title': 'Section Analytiques Avancées', 'analytics-sub': "D'autres rapports et graphiques arrivent bientôt",
+            kpiTotal: '👥 Total des Clients',
+            loadingText: '⏳ Chargement des données...', errorText: '❌ Impossible de charger les données. Vérifiez le lien de publication.',
+            noData: 'Aucune donnée correspondante', searchPh: 'Rechercher un client...',
+            mTotal: '👥 Total des Clients', mApt: '🏢 Appartements', mVilla: '🏰 Villas', mShop: '🏪 Locaux Commerciaux',
+            mVip: '🔥 Clients VIP', mWarm: '🪵 Clients WARM', mCold: '❄️ Clients COLD',
+            tfToday: "Aujourd'hui", tfYesterday: 'Hier', tfWeek: 'Semaine Dernière', tfMonth: 'Mois Dernier', tfAll: 'Tous',
+            liveText: 'En direct', updatedJustNow: "Mis à jour à l'instant", updatedAgo: 'Mis à jour'
+        }
+    };
+
+    function t(key) { return (TXT[currentLanguage] && TXT[currentLanguage][key]) || key; }
+
+    function updateStaticTranslations() {
+        Object.keys(TXT[currentLanguage]).forEach(function (key) {
+            var el = document.getElementById(key);
+            if (el) el.textContent = TXT[currentLanguage][key];
+        });
+        document.getElementById('searchInput').placeholder = t('searchPh');
+
+        document.getElementById('tf-today').textContent = t('tfToday');
+        document.getElementById('tf-yesterday').textContent = t('tfYesterday');
+        document.getElementById('tf-week').textContent = t('tfWeek');
+        document.getElementById('tf-month').textContent = t('tfMonth');
+        document.getElementById('tf-all').textContent = t('tfAll');
+        document.getElementById('liveText').textContent = t('liveText');
+        renderLastUpdated();
+    }
+
+    window.changeLanguage = function (lang) {
+        currentLanguage = lang;
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        updateStaticTranslations();
+        updateDashboard();
+    };
+
+    window.switchSection = function (section) {
+        document.getElementById('dashboard-section').style.display = section === 'dashboard' ? 'block' : 'none';
+        document.getElementById('analytics-section').style.display = section === 'analytics' ? 'block' : 'none';
+        document.getElementById('btn-dashboard').classList.toggle('active', section === 'dashboard');
+        document.getElementById('btn-analytics').classList.toggle('active', section === 'analytics');
+    };
+
+    function showBanner(msg, type) {
+        var b = document.getElementById('statusBanner');
+        b.textContent = msg;
+        b.className = 'status-banner ' + type;
+    }
+    function hideBanner() {
+        var b = document.getElementById('statusBanner');
+        b.className = 'status-banner';
+        b.textContent = '';
+    }
+
+    // ---------- Flexible header mapping ----------
+    function field(item, name) {
+        var keys = FIELD_MAP[name] || [];
+
+        // 1) Try exact key match first (fast path for simple/English sheets)
+        for (var i = 0; i < keys.length; i++) {
+            var k = keys[i];
+            if (item[k] !== undefined && item[k] !== '') return item[k];
+        }
+
+        // 2) Fuzzy fallback: find any actual column header that CONTAINS one of our
+        //    keywords (handles multi-word French headers like "Nom Complet", "Numéro de Téléphone")
+        var itemKeys = Object.keys(item);
+        for (var j = 0; j < keys.length; j++) {
+            var kw = keys[j];
+            for (var m = 0; m < itemKeys.length; m++) {
+                if (itemKeys[m].indexOf(kw) !== -1 && item[itemKeys[m]] !== '') return item[itemKeys[m]];
+            }
+        }
+        return '';
+    }
+
+    // ---------- Robust date parsing (handles DD/MM/YYYY, MM/DD/YYYY, YYYY-MM-DD, etc.) ----------
+    function parseFlexibleDate(raw) {
+        if (!raw) return null;
+        var s = String(raw).trim();
+
+        // ISO format: 2026-07-12
+        var iso = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+        if (iso) {
+            var d = new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
+            if (!isNaN(d.getTime())) return d;
+        }
+
+        // Slash or dash separated: DD/MM/YYYY or MM/DD/YYYY or D-M-YYYY
+        var parts = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+        if (parts) {
+            var a = Number(parts[1]);
+            var b = Number(parts[2]);
+            var y = Number(parts[3]);
+            if (y < 100) y += 2000;
+            // If first part > 12, it must be a day (DD/MM/YYYY)
+            var day, month;
+            if (a > 12) { day = a; month = b; }
+            else if (b > 12) { day = b; month = a; }
+            else { day = a; month = b; } // ambiguous, assume DD/MM/YYYY (common outside US)
+            var d2 = new Date(y, month - 1, day);
+            if (!isNaN(d2.getTime())) return d2;
+        }
+
+        // Last resort: let the browser try
+        var d3 = new Date(s);
+        return isNaN(d3.getTime()) ? null : d3;
+    }
+    function parseBudget(budgetStr) {
+        if (!budgetStr) return 0;
+        var numbers = String(budgetStr).match(/\d+/g);
+        if (!numbers || numbers.length === 0) return 0;
+        var nums = numbers.map(Number);
+        return Math.max.apply(null, nums);
+    }
+
+    // ---------- CSV parsing (quote-aware, handles commas inside quoted fields) ----------
+    function parseCSVLine(line) {
+        var result = [];
+        var cur = '';
+        var inQuotes = false;
+        for (var i = 0; i < line.length; i++) {
+            var ch = line[i];
+            if (ch === '"') {
+                if (inQuotes && line[i + 1] === '"') {
+                    cur += '"';
+                    i++;
+                } else {
+                    inQuotes = !inQuotes;
+                }
+            } else if (ch === ',' && !inQuotes) {
+                result.push(cur);
+                cur = '';
+            } else {
+                cur += ch;
+            }
+        }
+        result.push(cur);
+        return result.map(function (v) { return v.trim(); });
+    }
+
+    function parseCSV(text) {
+        var rows = text.split(/\r?\n/).filter(function (r) { return r.trim().length > 0; });
+        if (rows.length < 2) return [];
+        var headers = parseCSVLine(rows[0]).map(function (h) { return normalizeKey(h.replace(/^"|"$/g, '')); });
+        return rows.slice(1).map(function (row) {
+            var values = parseCSVLine(row);
+            var obj = {};
+            headers.forEach(function (h, i) { obj[h] = (values[i] || '').replace(/^"|"$/g, ''); });
+            return obj;
+        }).filter(function (r) { return Object.values(r).some(function (v) { return v; }); });
+    }
+
+    // ---------- Robust fetch with 3-tier fallback ----------
+    var lastUpdatedAt = null;
+
+    function markUpdated() {
+        lastUpdatedAt = new Date();
+        renderLastUpdated();
+    }
+
+    function renderLastUpdated() {
+        var el = document.getElementById('lastUpdatedTime');
+        if (!el || !lastUpdatedAt) return;
+        var secs = Math.floor((Date.now() - lastUpdatedAt.getTime()) / 1000);
+        var label;
+        if (secs < 10) label = t('updatedJustNow');
+        else if (secs < 60) label = t('updatedAgo') + ' ' + secs + 's';
+        else label = t('updatedAgo') + ' ' + Math.floor(secs / 60) + 'm';
+        el.textContent = '• ' + label;
+    }
+
+    function fetchData(isBackgroundRefresh) {
+        if (!isBackgroundRefresh) showBanner(t('loadingText'), 'loading');
+
+        function tryUrl(url) {
+            return fetch(url, { cache: 'no-store' }).then(function (res) {
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                return res.text();
+            });
+        }
+
+        tryUrl(CSV_URL_PRIMARY)
+            .then(function (csv) {
+                rawData = parseCSV(csv);
+                hideBanner();
+                markUpdated();
+                updateDashboard();
+            })
+            .catch(function (err1) {
+                console.warn('gviz endpoint failed, trying export endpoint:', err1.message);
+                tryUrl(CSV_URL_SECONDARY)
+                    .then(function (csv) {
+                        rawData = parseCSV(csv);
+                        hideBanner();
+                        markUpdated();
+                        updateDashboard();
+                    })
+                    .catch(function (err2) {
+                        console.warn('export endpoint failed, trying CORS proxy:', err2.message);
+                        tryUrl(CORS_PROXY + encodeURIComponent(CSV_URL_PRIMARY))
+                            .then(function (csv) {
+                                rawData = parseCSV(csv);
+                                hideBanner();
+                                markUpdated();
+                                updateDashboard();
+                            })
+                            .catch(function (err3) {
+                                console.error('All fetch attempts failed:', err3.message);
+                                // On a silent background refresh, don't overwrite the dashboard with an
+                                // error if we already have data showing — just skip this cycle quietly.
+                                if (!isBackgroundRefresh || rawData.length === 0) {
+                                    showBanner(t('errorText'), 'error');
+                                    rawData = [];
+                                    updateDashboard();
+                                }
+                            });
+                    });
+            });
+    }
+
+    window.manualRefresh = function () {
+        var btn = document.getElementById('refreshBtn');
+        if (btn) {
+            btn.classList.remove('spinning');
+            void btn.offsetWidth; // restart animation
+            btn.classList.add('spinning');
+        }
+        fetchData(true);
+    };
+
+    // Poll the sheet every 15 seconds so the dashboard reflects live edits automatically,
+    // and refresh again whenever the tab regains focus/visibility.
+    var LIVE_POLL_INTERVAL_MS = 15000;
+    var pollTimer = null;
+
+    function startLivePolling() {
+        if (pollTimer) clearInterval(pollTimer);
+        pollTimer = setInterval(function () { fetchData(true); }, LIVE_POLL_INTERVAL_MS);
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') fetchData(true);
+    });
+
+    setInterval(renderLastUpdated, 1000);
+
+    // ---------- Time filter helper ----------
+    function matchesTimeFilter(item) {
+        if (currentTimeFilter === 'all') return true;
+
+        var raw = field(item, 'date');
+        var d = raw ? parseFlexibleDate(raw) : null;
+        if (!d) return false;
+
+        var now = new Date();
+        var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        var startOfYesterday = new Date(startOfToday);
+        startOfYesterday.setDate(startOfYesterday.getDate() - 1);
+        var endOfYesterday = new Date(startOfToday.getTime() - 1);
+
+        if (currentTimeFilter === 'today') {
+            return d >= startOfToday && d < new Date(startOfToday.getTime() + 24 * 60 * 60 * 1000);
+        }
+        if (currentTimeFilter === 'yesterday') {
+            return d >= startOfYesterday && d <= endOfYesterday;
+        }
+        if (currentTimeFilter === 'lastWeek') {
+            var weekAgo = new Date(startOfToday);
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            return d >= weekAgo && d < new Date(startOfToday.getTime() + 24 * 60 * 60 * 1000);
+        }
+        if (currentTimeFilter === 'lastMonth') {
+            var monthAgo = new Date(startOfToday);
+            monthAgo.setDate(monthAgo.getDate() - 30);
+            return d >= monthAgo && d < new Date(startOfToday.getTime() + 24 * 60 * 60 * 1000);
+        }
+        return true;
+    }
+
+    window.setTimeFilter = function (tf) {
+        currentTimeFilter = tf;
+        document.querySelectorAll('.time-btn').forEach(function (btn) { btn.classList.remove('active'); });
+        var map = { today: 'tf-today', yesterday: 'tf-yesterday', lastWeek: 'tf-week', lastMonth: 'tf-month', all: 'tf-all' };
+        var el = document.getElementById(map[tf]);
+        if (el) el.classList.add('active');
+        updateDashboard();
+    };
+
+    // ---------- Filters ----------
+    var CLASS_KEYWORDS = { VIP: ['vip'], WARM: ['warm'], COLD: ['cold'] };
+    var STATUS_KEYWORDS = { Nouveau: ['nouveau', 'new'], EnCours: ['cours', 'progress'], Vendu: ['vendu', 'sold'], Perdu: ['perdu', 'lost'] };
+    var PROPERTY_KEYWORDS = { Apartment: ['appart', 'apartment', 'شقة'], Villa: ['villa', 'فيلا'], Commercial: ['comercial', 'commercial', 'local', 'محل'] };
+
+    function matchesAny(value, keywords) {
+        var v = (value || '').toLowerCase();
+        return keywords.some(function (k) { return v.indexOf(k) !== -1; });
+    }
+
+    function getFilteredData() {
+        var classFilter = document.getElementById('classificationFilter').value;
+        var statusFilter = document.getElementById('statusFilter').value;
+        var propertyFilter = document.getElementById('propertyFilter').value;
+        var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+        return rawData.filter(function (item) {
+            var cls = field(item, 'classification');
+            var stat = field(item, 'status');
+            var typ = field(item, 'type');
+            var name = field(item, 'name');
+            var phone = field(item, 'phone');
+
+            var timeMatch = matchesTimeFilter(item);
+            var classMatch = classFilter === 'all' || matchesAny(cls, CLASS_KEYWORDS[classFilter] || [classFilter.toLowerCase()]);
+            var statusMatch = statusFilter === 'all' || matchesAny(stat, STATUS_KEYWORDS[statusFilter] || [statusFilter.toLowerCase()]);
+            var propertyMatch = propertyFilter === 'all' || matchesAny(typ, PROPERTY_KEYWORDS[propertyFilter] || [propertyFilter.toLowerCase()]);
+            var searchMatch = !searchTerm ||
+                name.toLowerCase().includes(searchTerm) ||
+                phone.includes(searchTerm);
+
+            return timeMatch && classMatch && statusMatch && propertyMatch && searchMatch;
+        });
+    }
+
+    // ---------- Rolling 30-day helpers ----------
+    // period 0  = last 30 days (today - 30 .. today)
+    // period 1  = the 30 days before that (today - 60 .. today - 30)
+    function getRollingPeriodData(periodIndex) {
+        var today = new Date();
+        today.setHours(23, 59, 59, 999);
+
+        var end = new Date(today);
+        end.setDate(end.getDate() - (periodIndex * 30));
+
+        var start = new Date(end);
+        start.setDate(start.getDate() - 30);
+
+        return rawData.filter(function (item) {
+            var raw = field(item, 'date');
+            var d = raw ? parseFlexibleDate(raw) : today;
+            if (!d) return false;
+            return d > start && d <= end;
+        });
+    }
+
+    function calcGrowth(cur, prev) {
+        if (prev === 0) return cur > 0 ? 100 : 0;
+        return (((cur - prev) / prev) * 100).toFixed(1);
+    }
+
+    // ---------- KPIs ----------
+    function renderKpis() {
+        var filtered = getFilteredData();
+        var total = filtered.length;
+
+        document.getElementById('kpiGrid').innerHTML =
+            '<div class="kpi-card kpi-orange"><div class="kpi-content"><div><div class="kpi-label">' + t('kpiTotal') + '</div><div class="kpi-value">' + total + '</div></div>' +
+            '<div class="kpi-icon" style="background:' + NEON.orange + '22; color:' + NEON.orange + ';">👥</div></div></div>';
+    }
+
+    // ---------- Chart data ----------
+    function getClassificationData() {
+        var filtered = getFilteredData();
+        return [
+            { name: 'VIP 🔥', value: filtered.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.VIP); }).length, color: NEON.red },
+            { name: 'WARM 🪵', value: filtered.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.WARM); }).length, color: NEON.orange },
+            { name: 'COLD ❄️', value: filtered.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.COLD); }).length, color: NEON.cyan }
+        ];
+    }
+    function getStatusData() {
+        var filtered = getFilteredData();
+        return [
+            { name: 'Nouveau 🆕', value: filtered.filter(function (d) { return matchesAny(field(d, 'status'), STATUS_KEYWORDS.Nouveau); }).length, color: NEON.blue },
+            { name: 'En cours ⏳', value: filtered.filter(function (d) { return matchesAny(field(d, 'status'), STATUS_KEYWORDS.EnCours); }).length, color: NEON.yellow },
+            { name: 'Vendu ✅', value: filtered.filter(function (d) { return matchesAny(field(d, 'status'), STATUS_KEYWORDS.Vendu); }).length, color: NEON.green },
+            { name: 'Perdu ❌', value: filtered.filter(function (d) { return matchesAny(field(d, 'status'), STATUS_KEYWORDS.Perdu); }).length, color: NEON.red }
+        ];
+    }
+    function getPropertyData() {
+        var filtered = getFilteredData();
+        return [
+            { name: 'شقة 🏢', value: filtered.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Apartment); }).length, color: NEON.blue },
+            { name: 'فيلا 🏰', value: filtered.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Villa); }).length, color: NEON.purple },
+            { name: 'محل تجاري 🏪', value: filtered.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Commercial); }).length, color: NEON.pink }
+        ];
+    }
+
+    function totalOf(dataset) { return dataset.reduce(function (s, d) { return s + d.value; }, 0) || 1; }
+
+    // ---------- Self-contained SVG donut chart (no external library, always renders) ----------
+    // Each segment is sized strictly proportional to its share of the total, with a small gap
+    // between segments so the divisions are visually unmistakable, and colors are preserved per category.
+    function buildDonutSVG(dataset, totalLabel) {
+        var visible = dataset.filter(function (d) { return d.value > 0; });
+        var total = dataset.reduce(function (s, d) { return s + d.value; }, 0);
+        var size = 100;
+        var cx = size / 2, cy = size / 2, r = 38, strokeW = 22;
+        var circumference = 2 * Math.PI * r;
+        var gapDeg = visible.length > 1 ? 4 : 0; // visual gap (in degrees) between segments
+        var gapLen = (gapDeg / 360) * circumference;
+
+        if (total === 0) {
+            return '<div class="donut-wrap"><svg viewBox="0 0 ' + size + ' ' + size + '">' +
+                '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="#1e293b" stroke-width="' + strokeW + '"></circle>' +
+                '</svg><div class="donut-center"><div class="donut-empty">0</div></div></div>';
+        }
+
+        var offset = 0;
+        var segments = visible.map(function (d) {
+            var frac = d.value / total;
+            var rawDash = frac * circumference;
+            var dash = Math.max(rawDash - gapLen, 1); // subtract gap, keep a visible minimum sliver
+            var seg = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + d.color + '" stroke-width="' + strokeW + '" ' +
+                'stroke-dasharray="' + dash.toFixed(2) + ' ' + (circumference - dash).toFixed(2) + '" ' +
+                'stroke-dashoffset="-' + offset.toFixed(2) + '" stroke-linecap="round"></circle>';
+            offset += rawDash;
+            return seg;
+        }).join('');
+
+        // Clean ring style (matches reference): no background track, no center text — just the colored segments
+        return '<div class="donut-wrap"><svg viewBox="0 0 ' + size + ' ' + size + '">' +
+            segments +
+            '</svg></div>';
+    }
+
+    function renderCharts() {
+        var classData = getClassificationData();
+        var statusData = getStatusData();
+        var propertyData = getPropertyData();
+
+        var totalLabel = currentLanguage === 'ar' ? 'المجموع' : (currentLanguage === 'fr' ? 'Total' : 'Total');
+
+        document.getElementById('classificationChart').innerHTML = buildDonutSVG(classData, totalLabel);
+        document.getElementById('statusChart').innerHTML = buildDonutSVG(statusData, totalLabel);
+        document.getElementById('propertyChart').innerHTML = buildDonutSVG(propertyData, totalLabel);
+
+        renderLegends(classData, statusData, propertyData);
+    }
+
+    function renderLegends(classData, statusData, propertyData) {
+        function build(dataset) {
+            var total = totalOf(dataset);
+            return dataset.map(function (item) {
+                var pct = ((item.value / total) * 100).toFixed(0);
+                return '<div class="legend-row"><div class="legend-left"><span class="legend-dot" style="background:' + item.color + '"></span><span class="legend-name">' + item.name + '</span></div><span class="legend-num">' + item.value + ' (' + pct + '%)</span></div>';
+            }).join('');
+        }
+        document.getElementById('classificationLegend').innerHTML = build(classData);
+        document.getElementById('statusLegend').innerHTML = build(statusData);
+        document.getElementById('propertyLegend').innerHTML = build(propertyData);
+    }
+
+    // ---------- Clients table ----------
+    function renderLeadsTable() {
+        var filtered = getFilteredData();
+        var tbody = document.getElementById('leadsTableBody');
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr class="empty-row"><td colspan="6">' + t('noData') + '</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = filtered.slice(0, 15).map(function (item) {
+            var cls = field(item, 'classification');
+            var badgeClass = 'badge ';
+            if (matchesAny(cls, CLASS_KEYWORDS.VIP)) badgeClass += 'badge-vip';
+            else if (matchesAny(cls, CLASS_KEYWORDS.WARM)) badgeClass += 'badge-warm';
+            else badgeClass += 'badge-cold';
+
+            return '<tr>' +
+                '<td>' + (field(item, 'name') || '-') + '</td>' +
+                '<td>' + (field(item, 'phone') || '-') + '</td>' +
+                '<td>' + parseBudget(field(item, 'budget')) + 'M</td>' +
+                '<td>' + (field(item, 'type') || '-') + '</td>' +
+                '<td><span class="badge badge-status">' + (field(item, 'status') || '-') + '</span></td>' +
+                '<td><span class="' + badgeClass + '">' + (cls || '-') + '</span></td>' +
+                '</tr>';
+        }).join('');
+    }
+
+    // ---------- Monthly comparison (cleaned) ----------
+    function renderComparisonTable() {
+        var cur = getRollingPeriodData(0);
+        var prev = getRollingPeriodData(1);
+
+        var rows = [
+            { label: t('mTotal'), current: cur.length, previous: prev.length },
+            { label: t('mApt'), current: cur.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Apartment); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Apartment); }).length },
+            { label: t('mVilla'), current: cur.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Villa); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Villa); }).length },
+            { label: t('mShop'), current: cur.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Commercial); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'type'), PROPERTY_KEYWORDS.Commercial); }).length },
+            { label: t('mVip'), current: cur.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.VIP); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.VIP); }).length },
+            { label: t('mWarm'), current: cur.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.WARM); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.WARM); }).length },
+            { label: t('mCold'), current: cur.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.COLD); }).length, previous: prev.filter(function (d) { return matchesAny(field(d, 'classification'), CLASS_KEYWORDS.COLD); }).length }
+        ];
+
+        document.getElementById('comparisonTableBody').innerHTML = rows.map(function (row) {
+            var g = calcGrowth(row.current, row.previous);
+            var gn = parseFloat(g);
+            var gHtml;
+            if (gn > 0) gHtml = '<span class="growth-up">📈</span><span class="growth-up">+' + g + '%</span>';
+            else if (gn < 0) gHtml = '<span class="growth-down">📉</span><span class="growth-down">' + g + '%</span>';
+            else gHtml = '<span class="growth-flat">➖ 0%</span>';
+
+            return '<tr><td>' + row.label + '</td><td class="val-prev">' + row.previous + '</td><td class="val-cur">' + row.current + '</td><td><div class="growth-cell">' + gHtml + '</div></td></tr>';
+        }).join('');
+    }
+
+    // ---------- Master update ----------
+    window.updateDashboard = function () {
+        try {
+            renderKpis();
+            renderCharts();
+            renderLeadsTable();
+            renderComparisonTable();
+        } catch (e) {
+            console.error('Render error:', e);
+            showBanner(currentLanguage === 'ar' ? '⚠️ وقع خطأ أثناء عرض البيانات.' : '⚠️ Render error.', 'error');
+        }
+    };
+
+    // ---------- Global safety net: never let an uncaught error leave a blank page ----------
+    window.onerror = function (message, source, lineno, colno, error) {
+        console.error('UNCAUGHT ERROR:', message, 'at', source + ':' + lineno);
+        try {
+            showBanner((currentLanguage === 'ar' ? '⚠️ خطأ غير متوقع: ' : '⚠️ Unexpected error: ') + message, 'error');
+        } catch (e) { /* no-op, banner itself may not exist yet */ }
+        return true; // prevent default browser error overlay from blocking rendering
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        try {
+            updateStaticTranslations();
+            fetchData(false);
+            startLivePolling();
+        } catch (e) {
+            console.error('Init error:', e);
+            showBanner(currentLanguage === 'ar' ? '⚠️ خطأ أثناء بدء التشغيل.' : '⚠️ Startup error.', 'error');
+        }
+    });
+})();
+</script>
+</body>
+</html>
